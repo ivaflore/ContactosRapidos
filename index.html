@@ -1,0 +1,2399 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Visual de Contactos Útiles - Frutillar</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .card-zoom:hover img {
+            transform: scale(1.08);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased">
+
+    <!-- Header / Hero Section -->
+    <header class="bg-gradient-to-br from-slate-900 via-sky-950 to-indigo-950 text-white shadow-md relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-grid-white"></div>
+        <div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <span class="inline-flex items-center gap-1.5 bg-sky-500/30 text-sky-200 text-xs font-bold tracking-wider uppercase px-3 py-1 rounded-full mb-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        Frutillar, Chile • Directorio Visual
+                    </span>
+                    <h1 class="text-3xl sm:text-4xl font-black tracking-tight">Guía Visual de Utilidad</h1>
+                    <p class="mt-2 text-sky-100 max-w-xl text-sm sm:text-base">
+                        Encuentra rápidamente lo que buscas mediante fotos e iconos representativos. Contactos unificados y depurados listos para WhatsApp.
+                    </p>
+                </div>
+                
+                <!-- Status bar with totals -->
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10 flex items-center gap-4 self-start md:self-auto shadow-lg">
+                    <div class="text-center">
+                        <span class="block text-2xl font-bold text-sky-300" id="total-contacts-count">0</span>
+                        <span class="text-xs text-sky-100 uppercase font-semibold">Contactos</span>
+                    </div>
+                    <div class="w-px h-8 bg-white/20"></div>
+                    <div class="text-center">
+                        <span class="block text-2xl font-bold text-emerald-400" id="favs-count">0</span>
+                        <span class="text-xs text-sky-100 uppercase font-semibold">Favoritos</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search & Quick Filters -->
+            <div class="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-3 bg-white p-2 sm:p-3 rounded-2xl shadow-xl border border-slate-100 text-slate-800">
+                <div class="lg:col-span-8 relative">
+                    <i class="bi bi-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg"></i>
+                    <input type="text" id="search-input" placeholder="Escribe para buscar (ej: flete, gasfiter, leña, torta, peluquería)..." 
+                           class="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none text-slate-900 font-medium transition-all placeholder:text-slate-400" />
+                </div>
+                <div class="lg:col-span-4 flex gap-2">
+                    <button id="btn-show-favs" class="flex-1 px-4 py-3.5 bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-600 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all border border-transparent hover:border-rose-100">
+                        <i class="bi bi-heart-fill text-rose-500"></i>
+                        <span>Mis Guardados</span>
+                    </button>
+                    <button id="btn-clear-filters" class="px-4 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all">
+                        <i class="bi bi-arrow-counterclockwise"></i>
+                        <span class="hidden sm:inline">Limpiar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Left Sidebar: Category Selector -->
+        <aside class="lg:col-span-3">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5 sticky top-6">
+                <h3 class="font-bold text-slate-900 text-lg mb-4 flex items-center gap-2">
+                    <i class="bi bi-grid-fill text-sky-600"></i>
+                    Filtrar por Rubro
+                </h3>
+                
+                <div class="flex flex-row lg:flex-col gap-1 overflow-x-auto lg:overflow-x-visible pb-3 lg:pb-0 custom-scrollbar whitespace-nowrap lg:whitespace-normal" id="categories-container">
+                    <!-- Categories injected here -->
+                </div>
+            </div>
+        </aside>
+
+        <!-- Right Content Area: Contacts list -->
+        <section class="lg:col-span-9 flex flex-col gap-6">
+            
+            <!-- Filter Feedback Status -->
+            <div id="filter-feedback" class="hidden bg-sky-50 border border-sky-100 rounded-xl p-4 flex items-center justify-between text-sky-800 text-sm">
+                <div class="flex items-center gap-2">
+                    <i class="bi bi-info-circle-fill text-sky-600"></i>
+                    <span>Mostrando <strong id="filter-count">0</strong> resultados en <strong id="filter-tag">"Categoría"</strong></span>
+                </div>
+                <button onclick="clearCategoryFilter()" class="text-sky-600 hover:text-sky-800 font-bold underline">Ver todos</button>
+            </div>
+
+            <!-- Favorited Contacts Section -->
+            <div id="favorites-section" class="hidden">
+                <h3 class="font-bold text-slate-900 text-lg mb-3 flex items-center gap-2">
+                    <i class="bi bi-heart-fill text-rose-500 animate-pulse"></i>
+                    Tus Favoritos Rápidos
+                </h3>
+                <div id="favorites-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+                    <!-- Favorite cards -->
+                </div>
+                <hr class="border-slate-200 mt-6 mb-2">
+            </div>
+
+            <!-- Contacts Grid Header -->
+            <div class="flex items-center justify-between">
+                <h3 class="font-bold text-slate-900 text-lg flex items-center gap-2" id="results-title">
+                    <i class="bi bi-people-fill text-slate-500"></i>
+                    Todos los Servicios Registrados
+                </h3>
+                <span class="text-xs text-slate-500 font-medium" id="showing-total-txt"></span>
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="hidden flex-col items-center justify-center py-12 px-4 text-center bg-white rounded-2xl border border-slate-200/80 shadow-sm">
+                <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 mb-4 text-2xl">
+                    <i class="bi bi-search"></i>
+                </div>
+                <h4 class="font-bold text-slate-800 text-lg">No encontramos resultados</h4>
+                <p class="text-slate-500 text-sm mt-1 max-w-sm">Intenta buscando con otra palabra o selecciona "Ver Todos" en las categorías.</p>
+            </div>
+
+            <!-- Contact Cards Container -->
+            <div id="contacts-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+                <!-- Cards injected dynamically -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Toast Notification for Actions -->
+    <div id="toast-message" class="fixed bottom-5 right-5 bg-slate-900 text-white text-xs sm:text-sm px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 transition-all duration-300 transform translate-y-20 opacity-0 z-50">
+        <i class="bi bi-check-circle-fill text-emerald-400"></i>
+        <span id="toast-text">Contacto guardado</span>
+    </div>
+
+    <!-- Premium Footer -->
+    <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 mt-12">
+        <div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div>
+                <p class="text-slate-200 font-bold flex items-center gap-2 justify-center sm:justify-start">
+                    <i class="bi bi-telephone-outbound-fill text-sky-400"></i>
+                    Guía de Contactos de Utilidad Frutillar
+                </p>
+                <p class="text-xs text-slate-500 mt-1">Directorio visual unificado y consolidado sin duplicados.</p>
+            </div>
+            <div class="text-xs text-slate-500 flex flex-col items-center sm:items-end">
+                <span>Optimizado para teléfonos y computadoras</span>
+                <span class="mt-1">Región de Los Lagos, Chile 🇨🇱</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Database optimized with correct structure and fully un-duplicated
+        const CONTACTS_DATA = [
+            // SEGURIDAD Y EMERGENCIAS
+            { 
+                name: "Carabineros Frutillar", 
+                category: "Emergencias", 
+                phones: [{ num: "+56 65 276 5149", type: "fixed", label: "Llamar Teléfono Fijo" }], 
+                description: "Subcomisaría Frutillar - Carabineros de Chile",
+                extra: "Línea oficial de urgencia local"
+            },
+            { 
+                name: "Seguridad Pública Frutillar", 
+                category: "Emergencias", 
+                phones: [
+                    { num: "+56 9 5107 718", type: "cell", label: "Encargado Seguridad" },
+                    { num: "+56 9 5011 2729", type: "cell", label: "Alvaro (Seguridad)" }
+                ], 
+                description: "Oficina comunal y patrullaje preventivo de Frutillar",
+                extra: "Atención y apoyo comunitario"
+            },
+
+            // GASTRONOMÍA
+            { 
+                name: "Manke", 
+                category: "Gastronomía", 
+                phones: [{ num: "+56 9 4024 6678", type: "cell" }], 
+                description: "Cafetería, Pizzería y Restaurant",
+                extra: "Atención en local y para llevar"
+            },
+            { 
+                name: "Cafe Herz", 
+                category: "Gastronomía", 
+                phones: [{ num: "+56 9 9089 4034", type: "cell" }], 
+                description: "Cafetería tradicional con repostería alemana y sándwiches"
+            },
+            { 
+                name: "Di Parma", 
+                category: "Gastronomía", 
+                phones: [
+                    { num: "+56 9 8928 6146", type: "cell", label: "Línea Principal" },
+                    { num: "+56 9 8802 6944", type: "cell", label: "Línea Secundaria" }
+                ], 
+                description: "Pizzería, pastas, tablas y cafetería gourmet",
+                extra: "Consolidado: Líneas unificadas en un perfil"
+            },
+            { 
+                name: "Casa Rosalba", 
+                category: "Gastronomía", 
+                phones: [{ num: "+56 9 9336 9286", type: "cell" }], 
+                description: "Exquisita cafetería y restaurant de autor"
+            },
+            { 
+                name: "El Rincon de la Oma", 
+                category: "Gastronomía", 
+                phones: [{ num: "+56 9 9884 2425", type: "cell" }], 
+                description: "Cafetería y repostería alemana tradicional en el lago"
+            },
+            { 
+                name: "Testaccio Pizzeria", 
+                category: "Gastronomía", 
+                phones: [{ num: "+56 9 6329 3075", type: "cell" }], 
+                description: "Pizzas artesanales al horno de piedra"
+            },
+            { 
+                name: "Anjura Pizzeria", 
+                category: "Gastronomía", 
+                phones: [{ num: "+56 9 9699 0046", type: "cell" }], 
+                description: "Pizzería con ingredientes seleccionados y reparto a domicilio"
+            },
+            { 
+                name: "La Cocina de La Casona", 
+                category: "Gastronomía", 
+                phones: [{ num: "+56 9 8409 2560", type: "cell" }], 
+                description: "Café, restaurant, espacio para eventos y música en vivo todos los viernes",
+                extra: "Instagram: @lacocinadelacasona"
+            },
+
+            // CULTURA & TALLERES
+            { 
+                name: "Centro Cultural La Casona", 
+                category: "Cultura & Talleres", 
+                phones: [{ num: "+56 9 6486 9276", type: "cell" }], 
+                description: "Espacios creativos, exposiciones artísticas y talleres de arte para niños, adultos y adultos mayores.",
+                extra: "hola@lacasonafrutillar.cl | Instagram: @lacasonafrutillar"
+            },
+            { 
+                name: "Biblioteca Pública de Frutillar", 
+                category: "Cultura & Talleres", 
+                phones: [{ num: "(65) 242 1471", type: "fixed", label: "Llamar Biblioteca" }], 
+                description: "Espacio cultural comunitario y préstamo de libros"
+            },
+            { 
+                name: "Escuela Buen Corazón Orfebre", 
+                category: "Cultura & Talleres", 
+                phones: [{ num: "+56 9 7216 3515", type: "cell" }], 
+                description: "Taller artesanal de joyería, metales y orfebrería de autor",
+                extra: "Instagram: @buen_corazon_orfebre"
+            },
+            { 
+                name: "Kala Diseño", 
+                category: "Cultura & Talleres", 
+                phones: [{ num: "+56 9 8419 8615", type: "cell" }], 
+                description: "Diseño local y talleres creativos de manualidades"
+            },
+            { 
+                name: "La Matriz", 
+                category: "Cultura & Talleres", 
+                phones: [{ num: "+56 9 7161 6034", type: "cell" }], 
+                description: "Talleres artísticos, espacio creativo multidisciplinario"
+            },
+            { 
+                name: "El Atril", 
+                category: "Cultura & Talleres", 
+                phones: [{ num: "+56 9 7983 3471", type: "cell" }], 
+                description: "Clases y talleres de pintura artística y dibujo"
+            },
+
+            // REPOSTERÍA & DULCE
+            { 
+                name: "Miel Canela", 
+                category: "Repostería & Dulce", 
+                phones: [{ num: "+56 9 9638 8746", type: "cell" }], 
+                description: "Exquisita repostería artesanal local y pedidos personalizados"
+            },
+            { 
+                name: "Karina Montecinos", 
+                category: "Repostería & Dulce", 
+                phones: [{ num: "+56 9 4905 9235", type: "cell" }], 
+                description: "Tortas premium, repostería temática y banquetería de alta gama"
+            },
+            { 
+                name: "Belén Toledo - Kallfu", 
+                category: "Repostería & Dulce", 
+                phones: [{ num: "+56 9 9991 4646", type: "cell" }], 
+                description: "Pastelería fina y repostería artesanal"
+            },
+            { 
+                name: "Intercambioxequivalente", 
+                category: "Repostería & Dulce", 
+                phones: [{ num: "+56 9 3540 6943", type: "cell" }], 
+                description: "Bocados, repostería creativa y opciones de intercambio culinario"
+            },
+            { 
+                name: "Arlette Canasta", 
+                category: "Repostería & Dulce", 
+                phones: [{ num: "+56 9 8179 2975", type: "cell" }], 
+                description: "Canastas de regalos con repostería gourmet y desayunos a domicilio"
+            },
+            { 
+                name: "Tante Sandra", 
+                category: "Repostería & Dulce", 
+                phones: [{ num: "+56 9 6590 4834", type: "cell" }], 
+                description: "Pasteles y kuchenes tradicionales alemanes con recetas familiares"
+            },
+            { 
+                name: "La Cocina de Sandra", 
+                category: "Repostería & Dulce", 
+                phones: [{ num: "+56 9 5461 8296", type: "cell" }], 
+                description: "Comida casera, repostería artesanal y colaciones"
+            },
+            { 
+                name: "Cócteles Jaime Sanchez", 
+                category: "Repostería & Dulce", 
+                phones: [{ num: "+56 9 8205 7228", type: "cell" }], 
+                description: "Servicios de cócteles salados y dulces para eventos y reuniones"
+            },
+            { 
+                name: "La Maria Cocineria", 
+                category: "Repostería & Dulce", 
+                phones: [{ num: "+56 9 2393 4200", type: "cell" }], 
+                description: "Cocinería local, almuerzos caseros y delicias dulces tradicionales"
+            },
+            { 
+                name: "Repostería Ayelen (Gabriela Garcés)", 
+                category: "Repostería & Dulce", 
+                phones: [{ num: "+56 9 4751 5682", type: "cell" }], 
+                description: "Preparación de kuchenes, tortas y postres caseros por encargo"
+            },
+            { 
+                name: "Mont Blanc Pastelería", 
+                category: "Repostería & Dulce", 
+                phones: [{ num: "+56 9 9946 7475", type: "cell" }], 
+                description: "Pastelería saludable libre de azúcar, gluten y lactosa.",
+                extra: "Pedidos con 2 días de anticipación | Instagram: @montblanc_reposteria"
+            },
+            { 
+                name: "Sigrid Nannig", 
+                category: "Repostería & Dulce", 
+                phones: [{ num: "+56 9 9638 5613", type: "cell" }], 
+                description: "Especialidades de repostería fina de herencia alemana"
+            },
+            { 
+                name: "Delicias Libres de Gluten", 
+                category: "Repostería & Dulce", 
+                phones: [{ num: "+56 9 5634 7314", type: "cell" }], 
+                description: "Productos dulces y salados garantizados 100% sin gluten.",
+                extra: "Instagram: @deliciaslibre"
+            },
+
+            // ALIMENTOS & DELIVERY
+            { 
+                name: "Sur Hass", 
+                category: "Alimentos & Delivery", 
+                phones: [{ num: "+56 9 3456 7904", type: "cell" }], 
+                description: "Distribuidor mayorista de paltas de excelente calidad"
+            },
+            { 
+                name: "La Van de Los Rojos", 
+                category: "Alimentos & Delivery", 
+                phones: [{ num: "+56 9 8737 2709", type: "cell" }], 
+                description: "Reparto de alimentos y despensa general a domicilio"
+            },
+            { 
+                name: "FrutiHass", 
+                category: "Alimentos & Delivery", 
+                phones: [{ num: "+56 9 7608 6192", type: "cell" }], 
+                description: "Venta directa de paltas Hass y verduras seleccionadas"
+            },
+            { 
+                name: "La Despensa - Miriam Valenzuela", 
+                category: "Alimentos & Delivery", 
+                phones: [{ num: "+56 9 9100 1585", type: "cell" }], 
+                description: "Harinas integrales, frutos secos, semillas y productos saludables"
+            },
+            { 
+                name: "Harinas de Frutillar", 
+                category: "Alimentos & Delivery", 
+                phones: [{ num: "+56 9 6828 8542", type: "cell" }], 
+                description: "Venta y distribución de harinas seleccionadas por saco"
+            },
+            { 
+                name: "Aceite de Oliva Frutillar", 
+                category: "Alimentos & Delivery", 
+                phones: [{ num: "+56 9 8676 9767", type: "cell" }], 
+                description: "Venta de aceite de oliva premium de excelente origen"
+            },
+            { 
+                name: "Aceite de Oliva Claudia Rilling", 
+                category: "Alimentos & Delivery", 
+                phones: [{ num: "+56 9 9869 7944", type: "cell" }], 
+                description: "Aceite de oliva extra virgen artesanal y de autor"
+            },
+            { 
+                name: "Frutas y Verdura Los Concones", 
+                category: "Alimentos & Delivery", 
+                phones: [{ num: "+56 9 2872 1031", type: "cell" }], 
+                description: "Delivery regular de frutas y verduras frescas del huerto a tu hogar"
+            },
+            { 
+                name: "Frani Arándanos Frutillar", 
+                category: "Alimentos & Delivery", 
+                phones: [{ num: "+56 9 6205 7621", type: "cell" }], 
+                description: "Productores de arándanos frescos de temporada y congelados"
+            },
+
+            // TRANSPORTE, TAXIS & UBER
+            { 
+                name: "Carola Martinez - Traslados VIP & Airbnb", 
+                category: "Transporte & Uber", 
+                phones: [
+                    { num: "+56 9 5679 9289", type: "cell", label: "Línea Principal" },
+                    { num: "+56 9 7897 0684", type: "cell", label: "Línea Alternativa" }
+                ], 
+                description: "Servicio premium de traslado al Aeropuerto Tepual y arriendo turístico.",
+                extra: "Airbnb disponible: airbnb.cl/rooms/21772299"
+            },
+            { 
+                name: "Miguel Olavarría - Uber", 
+                category: "Transporte & Uber", 
+                phones: [{ num: "+56 9 9278 1788", type: "cell" }], 
+                description: "Conductor certificado de aplicación Uber para viajes locales e interurbanos"
+            },
+            { 
+                name: "Pedro - Uber", 
+                category: "Transporte & Uber", 
+                phones: [{ num: "+56 9 9543 5543", type: "cell" }], 
+                description: "Transporte privado y conductor de aplicación Uber confiable"
+            },
+            { 
+                name: "Uber Go Safe Frutillar", 
+                category: "Transporte & Uber", 
+                phones: [{ num: "+56 9 9777 0180", type: "cell" }], 
+                description: "Línea de transporte privado con altos estándares de seguridad"
+            },
+            { 
+                name: "Carlos González - Uber", 
+                category: "Transporte & Uber", 
+                phones: [{ num: "+56 9 4265 6523", type: "cell" }], 
+                description: "Servicio de transporte privado por aplicación"
+            },
+            { 
+                name: "Carlos Oyarzo - Viajes Aeropuerto", 
+                category: "Transporte & Uber", 
+                phones: [{ num: "+56 9 7897 0684", type: "cell" }], 
+                description: "Traslados al aeropuerto y turismo local"
+            },
+            { 
+                name: "Enzo Taxi", 
+                category: "Transporte & Uber", 
+                phones: [{ num: "+56 9 9556 9061", type: "cell" }], 
+                description: "Servicio de taxi urbano y traslados ejecutivos"
+            },
+            { 
+                name: "Orlando - Uber", 
+                category: "Transporte & Uber", 
+                phones: [{ num: "+56 9 6569 2013", type: "cell" }], 
+                description: "Conductor privado de aplicación con excelente disposición"
+            },
+            { 
+                name: "Uber y Delivery Jesús Martínez", 
+                category: "Transporte & Uber", 
+                phones: [{ num: "+56 9 5497 6942", type: "cell" }], 
+                description: "Servicios combinados de traslados particulares y entregas rápidas"
+            },
+            { 
+                name: "Colectivo Emerson Martínez", 
+                category: "Transporte & Uber", 
+                phones: [{ num: "+56 9 6874 7912", type: "cell" }], 
+                description: "Servicios de transporte colectivo local y fletes menores"
+            },
+            { 
+                name: "Marcelo Jara - Radio Taxi Frutillar", 
+                category: "Transporte & Uber", 
+                phones: [{ num: "+56 9 7271 0857", type: "cell" }], 
+                description: "Radiotaxi oficial con base física y traslados seguros las 24 horas"
+            },
+            { 
+                name: "Cristian Escobar", 
+                category: "Transporte & Uber", 
+                phones: [{ num: "+56 9 3080 1341", type: "cell" }], 
+                description: "Transporte privado de pasajeros"
+            },
+            { 
+                name: "Héctor Gómez", 
+                category: "Transporte & Uber", 
+                phones: [
+                    { num: "+56 9 3292 1618", type: "cell", label: "Línea Celular" },
+                    { num: "+56 9 7242 2146", type: "cell", label: "Línea Fija/Wsp" }
+                ], 
+                description: "Servicio de traslado de pasajeros local y rural unificado",
+                extra: "Ambas líneas agrupadas"
+            },
+            { 
+                name: "Taxi Ejecutivo (Aeropuerto)", 
+                category: "Transporte & Uber", 
+                phones: [{ num: "+56 9 7319 0096", type: "cell" }], 
+                description: "Rutas exclusivas directas hacia el Aeropuerto El Tepual"
+            },
+            { 
+                name: "Marcelino Chávez", 
+                category: "Transporte & Uber", 
+                phones: [{ num: "+56 9 3361 3547", type: "cell" }], 
+                description: "Servicios de traslado urbano"
+            },
+            { 
+                name: "Uber Frutillar César", 
+                category: "Transporte & Uber", 
+                phones: [{ num: "+56 9 6339 1064", type: "cell" }], 
+                description: "Conductor seguro y confiable para rutas dentro y fuera de la comuna"
+            },
+            { 
+                name: "Traslados David", 
+                category: "Transporte & Uber", 
+                phones: [{ num: "+56 9 9662 9311", type: "cell" }], 
+                description: "Servicio de transfer Frutillar - Aeropuerto con reserva"
+            },
+            { 
+                name: "Vania - Delivery/Traslados", 
+                category: "Transporte & Uber", 
+                phones: [{ num: "+56 9 9592 9044", type: "cell" }], 
+                description: "Transporte urbano, fletes menores y delivery dentro y fuera de Frutillar"
+            },
+
+            // FLETES & MUDANZAS
+            { 
+                name: "Elias Fletes", 
+                category: "Fletes & Mudanzas", 
+                phones: [{ num: "+56 9 8659 7797", type: "cell" }], 
+                description: "Transporte de carga express y fletes locales"
+            },
+            { 
+                name: "Sergio Mudanzas Frutilu (Tío Keko)", 
+                category: "Fletes & Mudanzas", 
+                phones: [{ num: "+56 9 8906 7416", type: "cell" }], 
+                description: "Servicios completos de mudanzas profesionales dentro de la región"
+            },
+            { 
+                name: "Jorge Cabrera - Mudanzas Frutillar", 
+                category: "Fletes & Mudanzas", 
+                phones: [{ num: "+56 9 7776 0556", type: "cell" }], 
+                description: "Fletes y mudanzas de confianza con resguardo de muebles"
+            },
+            { 
+                name: "Alexis Miralles Fletes", 
+                category: "Fletes & Mudanzas", 
+                phones: [{ num: "+56 9 4975 0055", type: "cell" }], 
+                description: "Fletes económicos, traslados de materiales y cachureos"
+            },
+            { 
+                name: "Guillermo Villarroel Transporte", 
+                category: "Fletes & Mudanzas", 
+                phones: [{ num: "+56 9 9911 8340", type: "cell" }], 
+                description: "Transporte pesado de materiales de construcción y carga en general"
+            },
+            { 
+                name: "Benito Pérez (Camión Frutillar)", 
+                category: "Fletes & Mudanzas", 
+                phones: [{ num: "+56 9 7208 4172", type: "cell" }], 
+                description: "Camión plano para mudanzas voluminosas y carga pesada"
+            },
+            { 
+                name: "Pablo Miralles Fletes", 
+                category: "Fletes & Mudanzas", 
+                phones: [{ num: "+56 9 3130 1435", type: "cell" }], 
+                description: "Traslado express, fletes rápidos dentro de la comuna"
+            },
+            { 
+                name: "Fletes y Mudanzas Décima Región", 
+                category: "Fletes & Mudanzas", 
+                phones: [{ num: "+56 9 7296 5485", type: "cell" }], 
+                description: "Mudanzas completas y logística de transportes en toda la X Región"
+            },
+
+            // ARRIENDOS & HOSPEDAJE
+            { 
+                name: "Hospedaje Frutillar Bajo - Color Hostel Vegetal", 
+                category: "Hospedajes & Arriendos", 
+                phones: [{ num: "+56 9 7790 0898", type: "cell" }], 
+                description: "Hospedaje ecológico y vegetariano ubicado en Frutillar Bajo"
+            },
+            { 
+                name: "Grupo Comunitario de Arriendos", 
+                category: "Hospedajes & Arriendos", 
+                phones: [{ num: "https://chat.whatsapp.com/LRNt1BxLsx0J56nJt18Vd6?mode=r_c", type: "link", label: "Unirse al Grupo de Wsp" }], 
+                description: "Enlace oficial del chat comunitario para buscar u ofrecer arriendos en la zona",
+                extra: "Ingreso directo haciendo clic en el enlace"
+            },
+            { 
+                name: "Las Liebres (Bariloche)", 
+                category: "Hospedajes & Arriendos", 
+                phones: [{ num: "+54 9 294 496 8686", type: "cell" }], 
+                description: "Departamentos turísticos totalmente equipados en Bariloche, Argentina"
+            },
+
+            // MASCOTAS & VETERINARIAS
+            { 
+                name: "Puerto Pet (Veterinaria & Pet Shop)", 
+                category: "Veterinarias & Mascotas", 
+                phones: [{ num: "+56 9 2201 4390", type: "cell" }], 
+                description: "Clínica veterinaria completa, venta de accesorios y alimentos premium.",
+                extra: "Ubicado en Alto Nativo Local 10 y 11"
+            },
+            { 
+                name: "Paula Mansilla", 
+                category: "Veterinarias & Mascotas", 
+                phones: [{ num: "+56 9 7923 7910", type: "cell" }], 
+                description: "Médico veterinaria generalista con atención clínica integral"
+            },
+            { 
+                name: "Vet Frutillar", 
+                category: "Veterinarias & Mascotas", 
+                phones: [{ num: "+56 9 7614 9432", type: "cell" }], 
+                description: "Consulta veterinaria general, hemogramas y exámenes de laboratorio"
+            },
+            { 
+                name: "Veterinario Víctor", 
+                category: "Veterinarias & Mascotas", 
+                phones: [{ num: "+56 9 3484 7236", type: "cell" }], 
+                description: "Especialista en post operatorios. Atención programada (No atiende urgencias)"
+            },
+            { 
+                name: "Alejandro Ruiz", 
+                category: "Veterinarias & Mascotas", 
+                phones: [{ num: "+56 9 9827 2711", type: "cell" }], 
+                description: "Médico veterinario con amplia trayectoria en la comuna de Frutillar"
+            },
+            { 
+                name: "Veterinaria Municipal Frutillar", 
+                category: "Veterinarias & Mascotas", 
+                phones: [{ num: "6502421427", type: "fixed", label: "Llamar Oficina" }], 
+                description: "Consultas, esterilización, vacunas y programas de tenencia responsable"
+            },
+            { 
+                name: "Apicultores de Rescate", 
+                category: "Veterinarias & Mascotas", 
+                phones: [
+                    { num: "+56 9 9797 7798", type: "cell", label: "Sra Maria Luisa" },
+                    { num: "+56 9 9040 4297", type: "cell", label: "Phillip" }
+                ], 
+                description: "Rescate, retiro seguro de enjambres de abejas y apicultura responsable",
+                extra: "Consolidado: Apicultores locales agrupados"
+            },
+            { 
+                name: "Anumka Llanquihue", 
+                category: "Veterinarias & Mascotas", 
+                phones: [{ num: "+56 9 5245 8089", type: "cell" }], 
+                description: "Cuidado holístico, terapias y bienestar animal"
+            },
+            { 
+                name: "Macarena Ramírez", 
+                category: "Veterinarias & Mascotas", 
+                phones: [{ num: "+56 9 6320 0425", type: "cell" }], 
+                description: "Médica Veterinaria con atención general y visitas a domicilio"
+            },
+            { 
+                name: "Andrea Díaz", 
+                category: "Veterinarias & Mascotas", 
+                phones: [{ num: "+56 9 6728 3601", type: "cell" }], 
+                description: "Atención médica veterinaria general a domicilio"
+            },
+            { 
+                name: "Lissette Alvarado", 
+                category: "Veterinarias & Mascotas", 
+                phones: [{ num: "+56 9 7940 2017", type: "cell" }], 
+                description: "Médica veterinaria con servicios a domicilio en Frutillar"
+            },
+            { 
+                name: "Walter Mansilla", 
+                category: "Veterinarias & Mascotas", 
+                phones: [{ num: "+56 9 6270 0704", type: "cell" }], 
+                description: "Médico veterinario clínico generalista"
+            },
+            { 
+                name: "Clínica Veterinaria Petrohué (Pto. Montt)", 
+                category: "Veterinarias & Mascotas", 
+                phones: [{ num: "+56 9 7217 9299", type: "cell" }], 
+                description: "Clínica de emergencias veterinarias complejas en Puerto Montt"
+            },
+            { 
+                name: "Veterinaria del Sur (Pto. Varas)", 
+                category: "Veterinarias & Mascotas", 
+                phones: [{ num: "+56 9 8207 8167", type: "cell" }], 
+                description: "Servicio avanzado de ecografías veterinarias y clínica en Puerto Varas"
+            },
+            { 
+                name: "Emergencias Veterinarias Puerto Montt", 
+                category: "Veterinarias & Mascotas", 
+                phones: [{ num: "+56 9 8991 1400", type: "cell" }], 
+                description: "Central telefónica para urgencias veterinarias las 24 horas en Pto. Montt"
+            },
+            { 
+                name: "Ignacia Alderete (Ecografías)", 
+                category: "Veterinarias & Mascotas", 
+                phones: [{ num: "+56 9 7337 4258", type: "cell" }], 
+                description: "Médica veterinaria especialista en ecografías diagnósticas a domicilio"
+            },
+            { 
+                name: "PazPet’s Veterinaria (Exóticos)", 
+                category: "Veterinarias & Mascotas", 
+                phones: [{ num: "+56 9 8388 6473", type: "cell" }], 
+                description: "Fauna silvestre, mascotas exóticas y aves en Puerto Montt.",
+                extra: "Instagram: @pazpets"
+            },
+
+            // MASCOTAS (SERVICIOS)
+            { 
+                name: "Crematorio de Mascotas San Francisco", 
+                category: "Veterinarias & Mascotas", 
+                phones: [{ num: "+56 9 7239 1654", type: "cell" }], 
+                description: "Servicio digno y compasivo de cremación individual y colectiva para mascotas"
+            },
+            { 
+                name: "Hoteles Perrunos", 
+                category: "Veterinarias & Mascotas", 
+                phones: [
+                    { num: "+56 9 9332 7104", type: "cell", label: "Hotel Caro" },
+                    { num: "+56 9 9643 5728", type: "cell", label: "Villa Alegre" },
+                    { num: "+56 9 9640 2995", type: "cell", label: "Eva Konekamp" }
+                ], 
+                description: "Hospedajes caninos de confianza para el cuidado de tus mascotas en vacaciones",
+                extra: "Consolidado: Tres opciones hoteleras en un solo perfil"
+            },
+            { 
+                name: "Mary - Cuidadora de Mascotas", 
+                category: "Veterinarias & Mascotas", 
+                phones: [{ num: "+56 9 4594 7242", type: "cell" }], 
+                description: "Paseo y cuidado personalizado de mascotas a domicilio"
+            },
+            { 
+                name: "Son Haustier", 
+                category: "Veterinarias & Mascotas", 
+                phones: [{ num: "+56 9 8837 2276", type: "cell" }], 
+                description: "Venta y distribución de alimento premium para perros y gatos"
+            },
+            { 
+                name: "Dany - Peluquería Canina & Manicurista", 
+                category: "Veterinarias & Mascotas", 
+                phones: [{ num: "+56 9 3063 6943", type: "cell" }], 
+                description: "Peluquería Canina 'Patitas Felices' y estética para perritos. También ofrece servicio de Manicurista (Nailsby Dany).",
+                extra: "Consolidado: Dos rubros unificados bajo el mismo número"
+            },
+            { 
+                name: "Peluquería Canina Sweet Dog", 
+                category: "Veterinarias & Mascotas", 
+                phones: [{ num: "+56 9 6533 5425", type: "cell" }], 
+                description: "Baño, corte higiénico y estética canina para todo tipo de razas"
+            },
+            { 
+                name: "Plaqui Pets", 
+                category: "Veterinarias & Mascotas", 
+                phones: [{ num: "+56 9 7704 7239", type: "cell" }], 
+                description: "Placas metálicas de identificación personalizadas y grabadas para mascotas"
+            },
+
+            // REPARACIÓN DE ESTUFAS & CALEFACCIÓN
+            { 
+                name: "Gastón Palma - Jardinería & Limpieza de Chimeneas", 
+                category: "Climatización & Estufas", 
+                phones: [{ num: "+56 9 6561 4321", type: "cell" }], 
+                description: "Servicio profesional de limpieza y deshollinado de ductos de chimeneas. También realiza cortes de pasto y mantención de parcelas.",
+                extra: "Consolidado: Múltiples oficios agrupados"
+            },
+            { 
+                name: "Marco Albornoz", 
+                category: "Climatización & Estufas", 
+                phones: [{ num: "+56 9 3877 1642", type: "cell" }], 
+                description: "Mantención de cocinas y combustiones a leña, estufas a pellet"
+            },
+            { 
+                name: "Antonieta", 
+                category: "Climatización & Estufas", 
+                phones: [{ num: "+56 9 4680 5958", type: "cell" }], 
+                description: "Servicio técnico integral para estufas a pellet y cocinas de combustión lenta"
+            },
+            { 
+                name: "Cristian Palma", 
+                category: "Climatización & Estufas", 
+                phones: [{ num: "+56 9 5906 1311", type: "cell" }], 
+                description: "Técnico especialista en estufas a pellet y gas"
+            },
+            { 
+                name: "Rodolfo Peletera", 
+                category: "Climatización & Estufas", 
+                phones: [{ num: "+56 9 3434 5234", type: "cell" }], 
+                description: "Servicio técnico experto en mantención de estufas pellet"
+            },
+            { 
+                name: "BMJ Servicios Pellet", 
+                category: "Climatización & Estufas", 
+                phones: [{ num: "+56 9 3100 8465", type: "cell" }], 
+                description: "Mantención especializada de calefactores y estufas a pellet"
+            },
+            { 
+                name: "Mantención Pellet (+4375)", 
+                category: "Climatización & Estufas", 
+                phones: [{ num: "+56 9 4994 4375", type: "cell" }], 
+                description: "Servicio técnico calificado para reparación de calefactores"
+            },
+            { 
+                name: "Francisco Carrasco Von B.", 
+                category: "Climatización & Estufas", 
+                phones: [{ num: "+56 9 3634 6179", type: "cell" }], 
+                description: "Mantención preventiva y correctiva de estufas a pellet"
+            },
+            { 
+                name: "Matías - Limpieza Combustiones", 
+                category: "Climatización & Estufas", 
+                phones: [{ num: "+56 9 5703 4263", type: "cell" }], 
+                description: "Limpieza y mantención profunda de estufas a combustión lenta"
+            },
+            { 
+                name: "Nelson Gómez (Técnico Toyotomi)", 
+                category: "Climatización & Estufas", 
+                phones: [{ num: "+56 9 8196 8262", type: "cell" }], 
+                description: "Servicio técnico oficial autorizado Toyotomi en Puerto Varas"
+            },
+
+            // GRÚAS & VULCANIZACIONES
+            { 
+                name: "Richard Altamirano - Grúa & Vulca 24/7", 
+                category: "Grúas & Mecánica", 
+                phones: [{ num: "+56 9 8673 8750", type: "cell" }], 
+                description: "Servicio integral de vulcanización y rescate de grúas operando 24 horas todos los días.",
+                extra: "Consolidado: Vulcanización y Grúa unificadas"
+            },
+            { 
+                name: "Grúas Martínez", 
+                category: "Grúas & Mecánica", 
+                phones: [{ num: "+56 9 7300 3907", type: "cell" }], 
+                description: "Rescate automotriz en carretera y ciudad"
+            },
+            { 
+                name: "Grúas Schmidt", 
+                category: "Grúas & Mecánica", 
+                phones: [{ num: "+56 9 8428 5728", type: "cell" }], 
+                description: "Servicio de transporte de vehículos de todo tipo"
+            },
+            { 
+                name: "Grúas Rodrigo (Pto. Varas)", 
+                category: "Grúas & Mecánica", 
+                phones: [{ num: "+56 32 213 2956", type: "fixed", label: "Llamar Grúa" }], 
+                description: "Servicio de asistencia vial en Puerto Varas y cercanías"
+            },
+
+            // TIMBRES & IMPRENTAS
+            { 
+                name: "Alidanco Timbres y Estampados", 
+                category: "Servicios Varios", 
+                phones: [{ num: "+56 9 6303 3610", type: "cell" }], 
+                description: "Confección de timbres de goma comerciales, estampados personalizados de poleras y jockey.",
+                extra: "Consolidado: Emisión de timbres Frutillar unificado"
+            },
+            { 
+                name: "Timbres y Regalos Nicky (Pto. Varas)", 
+                category: "Servicios Varios", 
+                phones: [
+                    { num: "+56 9 9821 2484", type: "cell", label: "Línea 1" },
+                    { num: "+56 9 9821 2487", type: "cell", label: "Línea 2" },
+                    { num: "+65 223 2008", type: "fixed", label: "Fijo Local" }
+                ], 
+                description: "Elaboración de timbres comerciales y artículos personalizados de regalo.",
+                extra: "Consolidado: Los tres números disponibles unificados"
+            },
+            { 
+                name: "Valentina - Limpieza & Uñas", 
+                category: "Servicios Varios", 
+                phones: [
+                    { num: "+56 9 7227 8662", type: "cell", label: "Línea Limpieza" },
+                    { num: "+56 9 3483 7984", type: "cell", label: "Línea Manicure" },
+                    { num: "+56 9 7272 4896", type: "cell", label: "Manicure 2" }
+                ], 
+                description: "Servicio experto de limpieza de alfombras a domicilio y embellecimiento de manos (Manicurista).",
+                extra: "Consolidado: Números agrupados"
+            },
+            { 
+                name: "FrutiStamp", 
+                category: "Servicios Varios", 
+                phones: [{ num: "+56 9 6367 1300", type: "cell" }], 
+                description: "Estampados textiles, diseño y personalización de vestuario"
+            },
+
+            // CONTABILIDAD, ABOGADOS & COMPRAVENTA
+            { 
+                name: "MC Asesorías Contables", 
+                category: "Finanzas & Legal", 
+                phones: [{ num: "+56 9 8159 9661", type: "cell" }], 
+                description: "Consultas tributarias, contabilidad general y apoyo técnico a pymes"
+            },
+            { 
+                name: "NyS Asesorías Contables (Sandra)", 
+                category: "Finanzas & Legal", 
+                phones: [{ num: "+56 9 2243 9493", type: "cell" }], 
+                description: "Servicios de declaración de impuestos, balances comerciales e inicio de actividades.",
+                extra: "Asociado a Sandra (NyS) y se marca transporte como inactivo"
+            },
+            { 
+                name: "Asesorías Empresariales MYV", 
+                category: "Finanzas & Legal", 
+                phones: [{ num: "+56 9 9883 0453", type: "cell" }], 
+                description: "Gestión administrativa integral, auditorías y asesorías financieras"
+            },
+            { 
+                name: "Ingeaudit SpA Consultora", 
+                category: "Finanzas & Legal", 
+                phones: [
+                    { num: "+56 9 7897 0684", type: "cell", label: "Contador Carlos" },
+                    { num: "+56 9 5679 9289", type: "cell", label: "Ingeniera Carola" }
+                ], 
+                description: "Consultora experta con más de 25 años de experiencia en Frutillar. Especialistas en regularización, inicio de actividades y remuneraciones.",
+                extra: "Consolidado: Datos unificados bajo una sola firma profesional"
+            },
+            { 
+                name: "Claudia Undurraga (Abogada)", 
+                category: "Finanzas & Legal", 
+                phones: [{ num: "+56 9 9273 6680", type: "cell" }], 
+                description: "Estudio jurídico y defensa legal en materias civiles, de familia y contractuales"
+            },
+            { 
+                name: "José Florencio Correa (Abogado)", 
+                category: "Finanzas & Legal", 
+                phones: [{ num: "+56 9 9154 7165", type: "cell" }], 
+                description: "Asesoría legal, escrituras públicas, posesión efectiva y trámites notariales"
+            },
+            { 
+                name: "Te Lo Compro Garage Los Lagos", 
+                category: "Servicios Varios", 
+                phones: [{ num: "+56 9 4283 9853", type: "cell" }], 
+                description: "Compra y venta de garage online de todo tipo de artículos.",
+                extra: "Instagram: @telocomprogarageloslagos"
+            },
+
+            // EVENTOS & PRODUCCIÓN
+            { 
+                name: "Il Cuore Eventos", 
+                category: "Eventos & Producción", 
+                phones: [{ num: "+56 9 5480 0227", type: "cell" }], 
+                description: "Centro de eventos campestre y producción gastronómica premium"
+            },
+            { 
+                name: "Bandurria", 
+                category: "Eventos & Producción", 
+                phones: [{ num: "+56 9 8838 0444", type: "cell" }], 
+                description: "Espacio boutique para celebraciones, reuniones y banquetes"
+            },
+            { 
+                name: "Productora Ma&Lú", 
+                category: "Eventos & Producción", 
+                phones: [{ num: "+56 9 7129 3358", type: "cell" }], 
+                description: "Servicios integrales de producción artística, banquetería y sonido"
+            },
+            { 
+                name: "Likan (Enzo Vega)", 
+                category: "Eventos & Producción", 
+                phones: [{ num: "+56 9 9996 5023", type: "cell" }], 
+                description: "Arriendo de carpas, vajilla, iluminación y mobiliario para eventos masivos"
+            },
+
+            // ASESORAS DEL HOGAR
+            { 
+                name: "Carolina Gutiérrez", 
+                category: "Asesoras del Hogar", 
+                phones: [{ num: "+56 9 8809 5380", type: "cell" }], 
+                description: "Servicio doméstico integral, limpieza profunda y aseo de confianza"
+            },
+            { 
+                name: "Cecilia Barría", 
+                category: "Asesoras del Hogar", 
+                phones: [{ num: "+56 9 7841 6417", type: "cell" }], 
+                description: "Asesora del hogar con destacadas referencias comerciales"
+            },
+            { 
+                name: "Sra. Elena", 
+                category: "Asesoras del Hogar", 
+                phones: [{ num: "+56 9 9447 95602", type: "cell" }], 
+                description: "Asesora doméstica. Disponible preferencialmente en media jornada de mañana (hasta las 14:00)"
+            },
+
+            // GAS
+            { 
+                name: "Gas Ovando (Frutillar)", 
+                category: "Servicios Varios", 
+                phones: [
+                    { num: "+56 9 9825 6024", type: "cell", label: "Línea 1" },
+                    { num: "+56 9 9214 3933", type: "cell", label: "Línea 2" }
+                ], 
+                description: "Distribución de gas licuado en cilindros a domicilio",
+                extra: "Consolidado: Números unificados"
+            },
+            { 
+                name: "Gas Triviño (Frutillar)", 
+                category: "Servicios Varios", 
+                phones: [{ num: "+56 9 8403 7416", type: "cell" }], 
+                description: "Distribución rápida de gas licuado en toda la comuna"
+            },
+
+            // MAESTROS, CONSTRUCCIÓN & INSTALACIONES
+            { 
+                name: "Mauricio Medina - Construcción & MMM Sol Int", 
+                category: "Maestros & Construcción", 
+                phones: [{ num: "+56 9 5714 8718", type: "cell" }], 
+                description: "Obras civiles, ampliaciones estructurales de madera, reparaciones y servicios técnicos para el hogar.",
+                extra: "Consolidado: Se agrupan perfiles de construcción y servicios técnicos MMM"
+            },
+            { 
+                name: "Carpinteros Frutillar M. Piticar", 
+                category: "Maestros & Construcción", 
+                phones: [{ num: "+56 9 9449 7577", type: "cell" }], 
+                description: "Servicios profesionales de carpintería estructural y ebanistería fina"
+            },
+            { 
+                name: "Constructora y Maquinaria HV Carlos Henríquez", 
+                category: "Maestros & Construcción", 
+                phones: [{ num: "+56 9 9995 1830", type: "cell" }], 
+                description: "Obras mayores de edificación, movimiento de tierra y arriendo de maquinaria pesada"
+            },
+            { 
+                name: "Cierres Perimetrales Albura Nativa", 
+                category: "Maestros & Construcción", 
+                phones: [{ num: "+56 9 8982 3888", type: "cell" }], 
+                description: "Instalación de panderetas, cercos de madera y cierres de parcelas con maderas nativas"
+            },
+            { 
+                name: "Antonio Moder Moder", 
+                category: "Maestros & Construcción", 
+                phones: [{ num: "+56 9 9000 5400", type: "cell" }], 
+                description: "Maestro constructor con vasta trayectoria en edificaciones residenciales"
+            },
+            { 
+                name: "Obras Civiles & Movimiento de Tierra (+1385)", 
+                category: "Maestros & Construcción", 
+                phones: [{ num: "+56 9 5814 1385", type: "cell" }], 
+                description: "Nivelación de terrenos, caminos de parcelas y excavaciones generales"
+            },
+            { 
+                name: "Construcción y Remodelaciones Darwin Leal", 
+                category: "Maestros & Construcción", 
+                phones: [{ num: "+56 9 4938 1901", type: "cell" }], 
+                description: "Remodelaciones de viviendas, pintura interior y exterior y reparaciones"
+            },
+            { 
+                name: "Verónica Ojeda - Muebles de Cocina", 
+                category: "Maestros & Construcción", 
+                phones: [{ num: "+56 9 9120 1280", type: "cell" }], 
+                description: "Diseño 3D y confección de muebles de cocina, clóset e interiores a medida"
+            },
+            { 
+                name: "Termopaneles Cordillera (Sebastián)", 
+                category: "Maestros & Construcción", 
+                phones: [{ num: "+56 9 9154 6677", type: "cell" }], 
+                description: "Ventanas de termopanel de alta eficiencia con marco de PVC o aluminio"
+            },
+            { 
+                name: "Ventanas Termosim (César)", 
+                category: "Maestros & Construcción", 
+                phones: [{ num: "+56 9 5015 5492", type: "cell" }], 
+                description: "Fabricación e instalación de perfiles termopaneles acústicos y térmicos"
+            },
+            { 
+                name: "Frutillar Eléctricos J. Harot", 
+                category: "Maestros & Construcción", 
+                phones: [{ num: "+56 9 2627 0652", type: "cell" }], 
+                description: "Instalaciones eléctricas residenciales y reparaciones de emergencia"
+            },
+            { 
+                name: "Servielectric Emilio Henríquez", 
+                category: "Maestros & Construcción", 
+                phones: [{ num: "+56 9 7253 7951", type: "cell" }], 
+                description: "Instalador eléctrico certificado para proyectos comerciales y domiciliarios"
+            },
+            { 
+                name: "Gonzalo Montenegro Eléctrico", 
+                category: "Maestros & Construcción", 
+                phones: [{ num: "+56 9 8860 4884", type: "cell" }], 
+                description: "Servicios de electricidad de baja tensión y tableros domiciliarios"
+            },
+            { 
+                name: "Ivan Rauque (Electricista Certificado SEC)", 
+                category: "Maestros & Construcción", 
+                phones: [{ num: "+56 9 8421 3573", type: "cell" }], 
+                description: "Instalaciones de primer nivel declaradas ante la SEC con firma certificada"
+            },
+            { 
+                name: "Pablo Mancilla (Eléctrico SEC)", 
+                category: "Maestros & Construcción", 
+                phones: [{ num: "+56 9 7295 3536", type: "cell" }], 
+                description: "Proyectos de electrificación, declaraciones de tableros TE1 autorizados por la SEC"
+            },
+            { 
+                name: "Construcciones Sobre Río (Julián de la Maza)", 
+                category: "Maestros & Construcción", 
+                phones: [{ num: "+56 9 8254 5120", type: "cell" }], 
+                description: "Creación de repisas rústicas de madera nativa, decoraciones y construcciones finas"
+            },
+            { 
+                name: "Francisco Araneda", 
+                category: "Maestros & Construcción", 
+                phones: [{ num: "+56 9 4971 8942", type: "cell" }], 
+                description: "Fabricación de muebles residenciales modernos y obras menores de pintura"
+            },
+
+            // GASFITERÍA & REPARACIONES
+            { 
+                name: "Rodrigo Escobar - Calefont & Estufas", 
+                category: "Gasfitería & Reparación", 
+                phones: [{ num: "+56 9 3437 1093", type: "cell" }], 
+                description: "Gasfiter autorizado, especialista en mantención profunda de calefont de todas las marcas y estufas hogareñas.",
+                extra: "Consolidado: Gasfitería y calefacción unificadas"
+            },
+            { 
+                name: "Mario Montiel (Lavadoras)", 
+                category: "Gasfitería & Reparación", 
+                phones: [{ num: "+56 9 8744 8179", type: "cell" }], 
+                description: "Servicio técnico experto de reparación y mantención de lavadoras automáticas y secadoras"
+            },
+            { 
+                name: "José Aros (Refrigeradores y Lavadoras)", 
+                category: "Gasfitería & Reparación", 
+                phones: [{ num: "+56 9 9535 7888", type: "cell" }], 
+                description: "Técnico especialista en servicio a domicilio de línea blanca (refrigeración y lavado)"
+            },
+            { 
+                name: "Servicios de Topografía Topored", 
+                category: "Gasfitería & Reparación", 
+                phones: [{ num: "+56 9 9850 7167", type: "cell" }], 
+                description: "Delimitaciones prediales, loteos y levantamientos topográficos con instrumental de precisión"
+            },
+            { 
+                name: "Robinson Gasfiter (Calefont)", 
+                category: "Gasfitería & Reparación", 
+                phones: [{ num: "+56 9 3515 5076", type: "cell" }], 
+                description: "Instalador certificado de redes de agua fría, caliente y reparación de calefont"
+            },
+
+            // JARDINERÍA
+            { 
+                name: "Ramón Muñoz Corta", 
+                category: "Jardinería & Tala", 
+                phones: [{ num: "+56 9 8776 1795", type: "cell" }], 
+                description: "Cortes de pasto periódicos, limpieza de orillas en parcelas y parcelación"
+            },
+
+            // MECÁNICOS & REPUESTOS
+            { 
+                name: "Redicar Alessandri (Mecánica & Vulcanización)", 
+                category: "Grúas & Mecánica", 
+                phones: [{ num: "+56 9 8295 4213", type: "cell" }], 
+                description: "Servicio técnico automotriz multimarca y vulcanización autorizada en Av. Alessandri.",
+                extra: "Consolidado: Mecánico y vulcanización unificadas"
+            },
+            { 
+                name: "Carlos Vargas (Mecánico)", 
+                category: "Grúas & Mecánica", 
+                phones: [{ num: "+56 9 3898 0005", type: "cell" }], 
+                description: "Mecánica general y scanner automotriz computarizado"
+            },
+            { 
+                name: "Marcos Ruiz (Mecánico)", 
+                category: "Grúas & Mecánica", 
+                phones: [{ num: "+56 9 9394 1424", type: "cell" }], 
+                description: "Diagnóstico, reparación de cajas de cambio y tren delantero"
+            },
+            { 
+                name: "Víctor Soto (Electricista Automotriz)", 
+                category: "Grúas & Mecánica", 
+                phones: [{ num: "+56 9 7910 3128", type: "cell" }], 
+                description: "Reparación de cableados eléctricos de autos, alternadores, motores de partida"
+            },
+            { 
+                name: "Sergio Hechtle (Eléctrico - Pellines)", 
+                category: "Grúas & Mecánica", 
+                phones: [{ num: "+56 9 8758 6678", type: "cell" }], 
+                description: "Taller eléctrico automotriz especializado ubicado en el sector Pellines"
+            },
+            { 
+                name: "Carlos Piticar (Mecánico)", 
+                category: "Grúas & Mecánica", 
+                phones: [{ num: "+56 9 7777 2405", type: "cell" }], 
+                description: "Afinamiento automotriz, frenos, mantención por kilometraje"
+            },
+            { 
+                name: "Guido Fontealba (Mecánico)", 
+                category: "Grúas & Mecánica", 
+                phones: [{ num: "+56 9 8662 1645", type: "cell" }], 
+                description: "Mecánica preventiva y reparación de motores diesel y bencineros"
+            },
+            { 
+                name: "Víctor - Mecánico Desabollador", 
+                category: "Grúas & Mecánica", 
+                phones: [{ num: "+56 9 7386 3100", type: "cell" }], 
+                description: "Reparaciones de carrocería, desabolladura y pintura automotriz al horno"
+            },
+            { 
+                name: "Ojeda Garage", 
+                category: "Grúas & Mecánica", 
+                phones: [{ num: "+56 9 9812 9891", type: "cell" }], 
+                description: "Mecánica integral, lubricación avanzada, suspensión y afinamientos"
+            },
+            { 
+                name: "Jiménez Repuestos", 
+                category: "Grúas & Mecánica", 
+                phones: [{ num: "+56 9 3522 1087", type: "cell" }], 
+                description: "Local de venta de repuestos multimarca y servicio de cambio de aceite garantizado (San Pedro 436)"
+            },
+            { 
+                name: "Repuestos Sánchez", 
+                category: "Grúas & Mecánica", 
+                phones: [{ num: "+56 9 9005 6329", type: "cell" }], 
+                description: "Comercio de autopartes, repuestos de motor y accesorios (Pedro Montt 240)"
+            },
+
+            // VULCANIZACIONES
+            { 
+                name: "Vulca San Pedro (Don Juan Cabrera)", 
+                category: "Grúas & Mecánica", 
+                phones: [{ num: "+56 9 8964 9746", type: "cell" }], 
+                description: "Vulcanización tradicional de neumáticos de vehículos menores"
+            },
+            { 
+                name: "Vulca Serviteca Alessandri", 
+                category: "Grúas & Mecánica", 
+                phones: [{ num: "+56 9 6331 4628", type: "cell" }], 
+                description: "Reparación de neumáticos, balanceo electrónico de ruedas"
+            },
+            { 
+                name: "Vulca Calistro (Al lado Shell)", 
+                category: "Grúas & Mecánica", 
+                phones: [{ num: "+56 9 9767 3289", type: "cell" }], 
+                description: "Vulcanización express ubicada estratégicamente a pasos de la estación Shell"
+            },
+
+            // BICICLETAS
+            { 
+                name: "Aro 25 (Bicicletería & Taller)", 
+                category: "Servicios Varios", 
+                phones: [{ num: "+56 9 5681 5422", type: "cell" }], 
+                description: "Rental de bicicletas, taller especializado, repuestos de gama media y alta (Av. Alessandri 430 Local 11)"
+            },
+            { 
+                name: "Joaquín Chávez (Bicicletas)", 
+                category: "Servicios Varios", 
+                phones: [{ num: "+56 9 5831 1003", type: "cell" }], 
+                description: "Taller mecánico a domicilio y reparación de todo tipo de bicicletas"
+            },
+
+            // CENTROS DE SALUD & MÉDICOS
+            { 
+                name: "Centro Médico Frutillar", 
+                category: "Salud & Bienestar", 
+                phones: [
+                    { num: "+56 9 3663 9969", type: "cell", label: "Contacto Celular" },
+                    { num: "+56 65 242 2808", type: "fixed", label: "Línea Fija" }
+                ], 
+                description: "Consultas médicas generales, laboratorios clínicos y especialistas",
+                extra: "Atención de lunes a viernes"
+            },
+            { 
+                name: "Centro Médico Vermont", 
+                category: "Salud & Bienestar", 
+                phones: [{ num: "+56 9 4981 2084", type: "cell" }], 
+                description: "Centro médico con atención de diversas especialidades y box de consulta"
+            },
+            { 
+                name: "Clínica Dental Ferrari", 
+                category: "Salud & Bienestar", 
+                phones: [{ num: "+56 9 3030 5614", type: "cell" }], 
+                description: "Atención odontológica integral, prótesis dentales y urgencias orales"
+            },
+            { 
+                name: "Paula Estefanía (Coach de Salud & Trasandina Foods)", 
+                category: "Salud & Bienestar", 
+                phones: [{ num: "+56 9 2803 1792", type: "cell" }], 
+                description: "Coach de bienestar integral y alimentación saludable. También produce ricas mantequillas de frutos secos artesanales (Trasandina Foods).",
+                extra: "Consolidado: Se unifican servicios profesionales y emprendimiento de frutos secos"
+            },
+            { 
+                name: "Dentipro", 
+                category: "Salud & Bienestar", 
+                phones: [{ num: "+56 9 7741 2520", type: "cell" }], 
+                description: "Clínica de ortodoncia, odontopediatría y estética dental"
+            },
+            { 
+                name: "Clínica del Sur - Dentista", 
+                category: "Salud & Bienestar", 
+                phones: [{ num: "+56 9 7408 8280", type: "cell" }], 
+                description: "Tratamientos odontológicos, endodoncias e implantes"
+            },
+            { 
+                name: "Patricia Bastias - Prolactar", 
+                category: "Salud & Bienestar", 
+                phones: [{ num: "+56 9 7880 9980", type: "cell" }], 
+                description: "Asesora de Lactancia Materna certificada. Acompañamiento en el proceso de amamantamiento"
+            },
+            { 
+                name: "Enfermero Matías Doepking", 
+                category: "Salud & Bienestar", 
+                phones: [{ num: "+56 9 7669 0508", type: "cell" }], 
+                description: "Atención de enfermería, curación de heridas complejas, inyecciones y retiro de puntos"
+            },
+            { 
+                name: "Enfermera Claudia", 
+                category: "Salud & Bienestar", 
+                phones: [{ num: "+56 9 9139 0356", type: "cell" }], 
+                description: "Servicios profesionales de enfermería a domicilio"
+            },
+            { 
+                name: "Inyecciones Javiera", 
+                category: "Salud & Bienestar", 
+                phones: [{ num: "+56 9 4293 8729", type: "cell" }], 
+                description: "Administración certificada de inyectables bajo receta médica"
+            },
+            { 
+                name: "Kinesiólogo Rodrigo Osorio", 
+                category: "Salud & Bienestar", 
+                phones: [{ num: "+56 9 8745 5332", type: "cell" }], 
+                description: "Kinesiólogo especialista en rehabilitación respiratoria infantil y adultos"
+            },
+            { 
+                name: "Kika Kine (Sapu Frutillar)", 
+                category: "Salud & Bienestar", 
+                phones: [{ num: "+56 9 9100 6142", type: "cell" }], 
+                description: "Atención kinésica en sistema de salud de urgencia y particular"
+            },
+            { 
+                name: "Andrea Ortúzar", 
+                category: "Salud & Bienestar", 
+                phones: [{ num: "+56 9 9761 0541", type: "cell" }], 
+                description: "Kinesiología integral, masoterapia terapéutica, yogaterapia y clases de Hatha Yoga. Círculos de mujeres."
+            },
+            { 
+                name: "Mara Holmes (Kinesióloga)", 
+                category: "Salud & Bienestar", 
+                phones: [{ num: "+56 9 9328 9327", type: "cell" }], 
+                description: "Atención de kinesiología adultos. Consulta en el segundo piso de la Galería Cruz Verde.",
+                extra: "Ambas menciones en la guía unificadas"
+            },
+            { 
+                name: "Podóloga Francisca Rosas", 
+                category: "Salud & Bienestar", 
+                phones: [{ num: "+56 9 5493 7238", type: "cell" }], 
+                description: "Servicios clínicos de podología preventivos e higiénicos"
+            },
+            { 
+                name: "Podóloga Yanina Fernández", 
+                category: "Salud & Bienestar", 
+                phones: [{ num: "+56 9 7821 3164", type: "cell" }], 
+                description: "Podología clínica autorizada, tratamiento de uña encarnada y pie diabético"
+            },
+            { 
+                name: "Toma de Muestras Clínica PV (Frutillar)", 
+                category: "Salud & Bienestar", 
+                phones: [{ num: "652333300", type: "fixed", label: "Llamar Toma Muestras" }], 
+                description: "Laboratorio y toma de muestras de exámenes generales"
+            },
+            { 
+                name: "Toma de Muestras Tecno Medic", 
+                category: "Salud & Bienestar", 
+                phones: [{ num: "+56 9 7798 2547", type: "cell" }], 
+                description: "Toma de muestras de sangre y exámenes generales. Ubicados en Patio Winkler"
+            },
+            { 
+                name: "Nilkanta Terapias & Yoga", 
+                category: "Salud & Bienestar", 
+                phones: [{ num: "+56 9 9085 3867", type: "cell" }], 
+                description: "Clases de yoga grupales e individuales, terapias complementarias de relajación"
+            },
+            { 
+                name: "Masajes Antiestrés Karla Bludau", 
+                category: "Salud & Bienestar", 
+                phones: [{ num: "+56 9 3179 6724", type: "cell" }], 
+                description: "Masajes descontracturantes, relajación y drenajes linfáticos"
+            },
+            { 
+                name: "Acupuntura y Masoterapia Mauricio Valderrama", 
+                category: "Salud & Bienestar", 
+                phones: [{ num: "+56 9 6594 3445", type: "cell" }], 
+                description: "Acupuntura clínica y masoterapia para alivio del dolor crónico"
+            },
+            { 
+                name: "Tania Masajes", 
+                category: "Salud & Bienestar", 
+                phones: [{ num: "+56 9 2769 8340", type: "cell" }], 
+                description: "Servicios profesionales de masoterapia de relajación"
+            },
+            { 
+                name: "Pamela Houston (Médico Antroposófico)", 
+                category: "Salud & Bienestar", 
+                phones: [{ num: "+56 9 8280 7000", type: "cell" }], 
+                description: "Atención médica con enfoque antroposófico integral y holístico"
+            },
+            { 
+                name: "María Paz Pinto (Médico Antroposófico)", 
+                category: "Salud & Bienestar", 
+                phones: [{ num: "+56 9 9085 7360", type: "cell" }], 
+                description: "Consulta de medicina antroposófica y terapias integrativas"
+            },
+            { 
+                name: "Botica Alemana Frutillar & Iridología Sur", 
+                category: "Salud & Bienestar", 
+                phones: [{ num: "+56 9 9743 9124", type: "cell" }], 
+                description: "Venta de medicina natural, homeopatía y flores de Bach. Consulta de diagnóstico de salud mediante Iridología.",
+                extra: "Patio Winkler Local 14"
+            },
+            { 
+                name: "Romina Cayo - Kinesiología & Naturopatía", 
+                category: "Salud & Bienestar", 
+                phones: [{ num: "+56 9 6633 9447", type: "cell" }], 
+                description: "Masoterapia, kinesiología rehabilitadora y medicina natural o naturopatía"
+            },
+
+            // ESPECIALIDADES DE LA REGIÓN
+            { 
+                name: "Dr. García (Cardiología Adulto)", 
+                category: "Salud & Bienestar", 
+                phones: [], 
+                description: "Médico especialista en Cardiología de Adultos. Atiende en la Clínica Puerto Varas.",
+                extra: "Especialista de gran renombre en la región"
+            },
+            { 
+                name: "Dr. Patricio Guerra (Neurólogo Infantil)", 
+                category: "Salud & Bienestar", 
+                phones: [], 
+                description: "Médico especialista en neurología de niños y adolescentes. Atiende en Puerto Montt.",
+                extra: "Especialista en la región"
+            },
+            { 
+                name: "Luis Pedraza (Traumatólogo Infantil)", 
+                category: "Salud & Bienestar", 
+                phones: [], 
+                description: "Especialista traumatológico infantil de gran trayectoria. Atendía en el CET de Puerto Varas."
+            },
+            { 
+                name: "Dr. Enrique Testart (Traumatólogo Infantil)", 
+                category: "Salud & Bienestar", 
+                phones: [], 
+                description: "Médico traumatólogo infantil. Atiende en la Clínica Puerto Varas."
+            },
+            { 
+                name: "Dr. Rodrigo González (Traumatólogo)", 
+                category: "Salud & Bienestar", 
+                phones: [], 
+                description: "Especialista traumatológico disponible en la Clínica Puerto Varas."
+            },
+            { 
+                name: "Dr. Gustavo Medrano Rojas (Broncopulmonar)", 
+                category: "Salud & Bienestar", 
+                phones: [], 
+                description: "Médico neumólogo / broncopulmonar. Atiende en su consulta del centro de Puerto Varas."
+            },
+            { 
+                name: "Drs. Riquelme (Broncopulmonares)", 
+                category: "Salud & Bienestar", 
+                phones: [], 
+                description: "Destacado equipo familiar de broncopulmonares (dos hermanos y su hijo). Atienden en la Clínica Andes Salud."
+            },
+            { 
+                name: "Dr. Juan Cristóbal Ossa (Gastroenterólogo Infantil)", 
+                category: "Salud & Bienestar", 
+                phones: [], 
+                description: "Especialista digestivo para niños y lactantes en la Clínica Puerto Varas."
+            },
+            { 
+                name: "Dr. Manuel Mardones (Otorrinolaringólogo)", 
+                category: "Salud & Bienestar", 
+                phones: [], 
+                description: "Médico Cirujano Otorrino. Atiende en Clínica Andes Salud y en el Centro Médico Vermontt de Frutillar."
+            },
+            { 
+                name: "Dra. Carla de la Fuente (Inmunología)", 
+                category: "Salud & Bienestar", 
+                phones: [{ num: "+56 9 9745 0863", type: "cell" }], 
+                description: "Consulta de Inmunología Integrativa y tratamientos preventivos inmunológicos"
+            },
+
+            // FARMACIAS
+            { 
+                name: "Turnos de Farmacia (Sitio Web)", 
+                category: "Salud & Bienestar", 
+                phones: [{ num: "https://www.turnofarmacia.cl/farmacia-de-turno-en-frutillar", type: "link", label: "Ver Farmacias de Turno" }], 
+                description: "Enlace directo para revisar en tiempo real qué farmacia está de turno hoy en Frutillar",
+                extra: "Información ministerial oficial"
+            },
+            { 
+                name: "Farmacia Frutillar", 
+                category: "Salud & Bienestar", 
+                phones: [{ num: "652421267", type: "fixed", label: "Llamar Farmacia" }], 
+                description: "Farmacia tradicional local"
+            },
+            { 
+                name: "Farmacia Cruz Verde", 
+                category: "Salud & Bienestar", 
+                phones: [{ num: "+56 9 5149 8784", type: "cell" }], 
+                description: "Sucursal local de cadena"
+            },
+            { 
+                name: "Farmacia Netfarma (Acuenta)", 
+                category: "Salud & Bienestar", 
+                phones: [], 
+                description: "Ubicada al interior del supermercado Supermercado Acuenta",
+                extra: "Sin número telefónico reportado"
+            },
+            { 
+                name: "Farmacia Doctor Simi", 
+                category: "Salud & Bienestar", 
+                phones: [{ num: "6522421998", type: "fixed", label: "Llamar Farmacia" }], 
+                description: "Farmacia de medicamentos genéricos y bioequivalentes"
+            },
+            { 
+                name: "Farmacia Municipal Frutillar", 
+                category: "Salud & Bienestar", 
+                phones: [], 
+                description: "Atención a la comunidad: Lunes y Miércoles de 08:00 a 13:00 y de 16:00 a 20:00. Martes, Jueves y Viernes de 08:00 a 13:00.",
+                extra: "Sin número de teléfono registrado"
+            },
+
+            // BEAUTY & ESTÉTICA
+            { 
+                name: "Evelyn Fernández (Manicurista)", 
+                category: "Belleza & Estética", 
+                phones: [{ num: "+56 9 3126 5341", type: "cell" }], 
+                description: "Manos que embellecen - Servicios profesionales de esmaltado y manicure"
+            },
+            { 
+                name: "Josefa (Cejas & Pestañas)", 
+                category: "Belleza & Estética", 
+                phones: [{ num: "+56 9 7682 0194", type: "cell" }], 
+                description: "Perfilado de cejas y extensiones de pestañas pelo a pelo profesionales.",
+                extra: "Instagram: @pretty.lashes."
+            },
+            { 
+                name: "Depilación con Cera (+3859)", 
+                category: "Belleza & Estética", 
+                phones: [{ num: "+56 9 6162 3859", type: "cell" }], 
+                description: "Servicio de depilación corporal y facial tradicional con cera"
+            },
+            { 
+                name: "Mit Liebe Centro de Belleza & Peluquería Hotel", 
+                category: "Belleza & Estética", 
+                phones: [{ num: "+56 9 4994 9732", type: "cell" }], 
+                description: "Tratamientos cosméticos, peluquería avanzada, peinados y tinturas en Hotel Frutillar.",
+                extra: "Peluquería del hotel y centro Mit Liebe unificados"
+            },
+            { 
+                name: "Clínica de Estética B&J", 
+                category: "Belleza & Estética", 
+                phones: [{ num: "+56 9 3092 0064", type: "cell" }], 
+                description: "Tratamientos dermoestéticos faciales y corporales no invasivos autorizados"
+            },
+            { 
+                name: "Consulta Dermoestética Igna", 
+                category: "Belleza & Estética", 
+                phones: [{ num: "+56 9 9300 2428", type: "cell" }], 
+                description: "Asesorías estéticas profesionales para el cuidado de la piel"
+            },
+            { 
+                name: "María Nails", 
+                category: "Belleza & Estética", 
+                phones: [{ num: "+56 9 4230 0451", type: "cell" }], 
+                description: "Esmaltado permanente, esculpidas y diseños artísticos en uñas.",
+                extra: "Instagram: @__marianails"
+            },
+            { 
+                name: "Alykari Cosmética Natural", 
+                category: "Belleza & Estética", 
+                phones: [{ num: "+56 9 5377 8460", type: "cell" }], 
+                description: "Tienda de cosmética natural, aromaterapia artesanal, regalos y bienestar"
+            },
+
+            // ARTESANÍAS, DECO & REGALOS
+            { 
+                name: "Art. Pewen Frutillar", 
+                category: "Decoración & Regalos", 
+                phones: [{ num: "+56 9 7659 9699", type: "cell" }], 
+                description: "Artesanías locales de alta calidad hechas con maderas nobles"
+            },
+            { 
+                name: "Casita Cascanueces", 
+                category: "Decoración & Regalos", 
+                phones: [{ num: "+56 9 6319 3316", type: "cell" }], 
+                description: "Tienda tradicional de decoraciones navideñas y souvenirs icónicos"
+            },
+            { 
+                name: "Mercadito de La Casona", 
+                category: "Decoración & Regalos", 
+                phones: [{ num: "+56 9 5774 1716", type: "cell" }], 
+                description: "Espacio boutique con productos artesanales, recuerdos y creaciones locales"
+            },
+            { 
+                name: "Enjuncado - Hernán Loaiza", 
+                category: "Decoración & Regalos", 
+                phones: [{ num: "+56 9 9719 8383", type: "cell" }], 
+                description: "Restauración y enjuncado de sillas tradicionales y muebles de madera"
+            },
+            { 
+                name: "Dulces Momentos Mily", 
+                category: "Decoración & Regalos", 
+                phones: [{ num: "+56 9 3368 4769", type: "cell" }], 
+                description: "Regalos personalizados, cajas sorpresa y arreglos de cumpleaños"
+            },
+            { 
+                name: "La Clementina", 
+                category: "Decoración & Regalos", 
+                phones: [{ num: "+56 9 9877 4677", type: "cell" }], 
+                description: "Hermosos artículos, ropa y regalos para baby shower o guaguas de hasta un año"
+            },
+
+            // FLORERÍAS
+            { 
+                name: "Elegancia Floral", 
+                category: "Decoración & Regalos", 
+                phones: [{ num: "+56 9 5847 9016", type: "cell" }], 
+                description: "Arreglos florales frescos, ramos de novia y decoración para ceremonias"
+            },
+            { 
+                name: "Florería M&C", 
+                category: "Decoración & Regalos", 
+                phones: [{ num: "+56 9 8546 0977", type: "cell" }], 
+                description: "Flores naturales a domicilio, ramos tradicionales y condolencias"
+            },
+
+            // PODAS & MADERA NATIVA
+            { 
+                name: "Francisco Henríquez - Poda & Madera Nativa", 
+                category: "Jardinería & Tala", 
+                phones: [{ num: "+56 9 6120 5034", type: "cell" }], 
+                description: "Servicios forestales profesionales de poda, tala de árboles de altura peligrosos y venta de maderas nativas."
+            },
+            { 
+                name: "George - Podas", 
+                category: "Jardinería & Tala", 
+                phones: [{ num: "+56 9 8933 1349", type: "cell" }], 
+                description: "Tala y poda de ramas peligrosas, despeje de tendidos eléctricos"
+            },
+
+            // CERRAJEROS
+            { 
+                name: "Rigoberto Báez (Cerrajero)", 
+                category: "Maestros & Construcción", 
+                phones: [{ num: "+56 9 8182 2892", type: "cell" }], 
+                description: "Apertura de cerraduras de casas, cambios de chapas de alta seguridad"
+            },
+            { 
+                name: "Patricio (Cerrajero)", 
+                category: "Maestros & Construcción", 
+                phones: [{ num: "+56 9 9281 4064", type: "cell" }], 
+                description: "Cerrajería automotriz y residencial de emergencia"
+            },
+            { 
+                name: "Johny Cerrajero (Pto. Varas)", 
+                category: "Maestros & Construcción", 
+                phones: [{ num: "+56 9 9676 9710", type: "cell" }], 
+                description: "Taller móvil de cerrajería disponible para urgencias en la cuenca del lago"
+            },
+
+            // VENTA DE LEÑA SECA
+            { 
+                name: "Leña Colonia", 
+                category: "Alimentos & Delivery", 
+                phones: [
+                    { num: "+56 9 9120 3581", type: "cell", label: "Línea 1" },
+                    { num: "+56 9 6603 9510", type: "cell", label: "Línea 2" }
+                ], 
+                description: "Venta y reparto de leña seca nativa certificada",
+                extra: "Consolidado: Números agrupados"
+            },
+            { 
+                name: "Leña Carmen Villarroel", 
+                category: "Alimentos & Delivery", 
+                phones: [{ num: "+56 9 7770 6669", type: "cell" }], 
+                description: "Despacho de leña seca por metros a domicilio"
+            },
+            { 
+                name: "Leña Ignacio Godoy", 
+                category: "Alimentos & Delivery", 
+                phones: [{ num: "+56 9 3553 8420", type: "cell" }], 
+                description: "Suministro de leña seca para el invierno"
+            },
+            { 
+                name: "Venta de Leña Comunal (+3393)", 
+                category: "Alimentos & Delivery", 
+                phones: [
+                    { num: "+56 9 2624 3393", type: "cell", label: "Línea 1" },
+                    { num: "+56 9 9444 0347", type: "cell", label: "Línea 2" }
+                ], 
+                description: "Venta directa de metros de leña seca nativa",
+                extra: "Consolidado: Líneas unificadas"
+            },
+            { 
+                name: "Leña Patricio Lagos", 
+                category: "Alimentos & Delivery", 
+                phones: [{ num: "+56 9 9663 4604", type: "cell" }], 
+                description: "Reparto a domicilio de excelente leña seca de bosque manejado"
+            },
+            { 
+                name: "Leña Carlos", 
+                category: "Alimentos & Delivery", 
+                phones: [{ num: "+56 9 8234 1594", type: "cell" }], 
+                description: "Venta estacional de sacos y metros de leña seca"
+            },
+
+            // PAISAJISMO
+            { 
+                name: "La Invernada (Paisajismo)", 
+                category: "Jardinería & Tala", 
+                phones: [{ num: "+56 9 9626 8774", type: "cell" }], 
+                description: "Venta de plantas, diseño de jardines, sustratos y asesoría técnica de paisajismo"
+            },
+
+            // COSTURAS & CONFECCIÓN
+            { 
+                name: "Margarita (Costurera)", 
+                category: "Servicios Varios", 
+                phones: [{ num: "+56 9 9345 2062", type: "cell" }], 
+                description: "Confección textil de hogar, cortinajes, sábanas y arreglos de ropa en general"
+            },
+            { 
+                name: "Mari (Arreglos)", 
+                category: "Servicios Varios", 
+                phones: [{ num: "+56 9 9978 2196", type: "cell" }], 
+                description: "Bastillas, entallados de prendas y costuras de emergencia"
+            },
+            { 
+                name: "Myriam Bustamante (Confecciones)", 
+                category: "Servicios Varios", 
+                phones: [{ num: "+56 9 3883 0196", type: "cell" }], 
+                description: "Servicios expertos de costura y confección de vestuario"
+            },
+            { 
+                name: "Angélica Almonacid (Frutillar Bajo)", 
+                category: "Servicios Varios", 
+                phones: [
+                    { num: "+56 9 8759 0137", type: "cell", label: "Línea 1" },
+                    { num: "+56 9 2625 9076", type: "cell", label: "Línea 2" }
+                ], 
+                description: "Modista y costurera tradicional en sector bajo de la comuna",
+                extra: "Consolidado: Números unificados"
+            },
+            { 
+                name: "Sra. Donilia (Confección desde cero)", 
+                category: "Servicios Varios", 
+                phones: [{ num: "+56 9 5604 2601", type: "cell" }], 
+                description: "Sastrería fina, diseño de vestidos, trajes y costuras complejas desde el molde básico"
+            },
+
+            // CORREDORES DE PROPIEDADES
+            { 
+                name: "Sandra Corredora", 
+                category: "Finanzas & Legal", 
+                phones: [{ num: "+56 9 8901 7960", type: "cell" }], 
+                description: "Gestión de compra, venta y arriendos de terrenos, parcelas y casas residenciales"
+            },
+            { 
+                name: "Nicole Corredora", 
+                category: "Finanzas & Legal", 
+                phones: [{ num: "+56 9 9872 5243", type: "cell" }], 
+                description: "Asesoría en corretaje de propiedades, tasaciones e inscripciones"
+            },
+            { 
+                name: "Cecilia Parada", 
+                category: "Finanzas & Legal", 
+                phones: [{ num: "+56 9 9847 5257", type: "cell" }], 
+                description: "Venta de parcelas exclusivas y propiedades residenciales en la cuenca del lago"
+            },
+            { 
+                name: "Mirada Sur Propiedades", 
+                category: "Finanzas & Legal", 
+                phones: [{ num: "+56 9 9462 1819", type: "cell" }], 
+                description: "Cartera exclusiva de arriendos por año corrido, temporales y compraventas"
+            },
+            { 
+                name: "Planning Patagonia", 
+                category: "Finanzas & Legal", 
+                phones: [{ num: "+56 9 9081 8722", type: "cell" }], 
+                description: "Inmobiliaria y corretaje premium enfocado en parcelas ecológicas y proyectos de desarrollo"
+            },
+            { 
+                name: "Daniela de la Fuente", 
+                category: "Finanzas & Legal", 
+                phones: [{ num: "+56 9 9438 6163", type: "cell" }], 
+                description: "Gestión experta de propiedades rurales y urbanas"
+            },
+            { 
+                name: "Nómada Propiedades - Marion Meza", 
+                category: "Finanzas & Legal", 
+                phones: [{ num: "+56 9 6272 0110", type: "cell" }], 
+                description: "Gestión inmobiliaria personalizada, arriendos de temporada y administración de propiedades.",
+                extra: "Consolidado: Perfil de Marion Meza y Nómada unificados en un solo número"
+            },
+            { 
+                name: "Génesis Arismendi", 
+                category: "Finanzas & Legal", 
+                phones: [{ num: "+56 9 5751 0283", type: "cell" }], 
+                description: "Corredora local especializada en parcelación urbana y arriendos residenciales"
+            },
+            { 
+                name: "Kathy Gebauer", 
+                category: "Finanzas & Legal", 
+                phones: [{ num: "+56 9 9939 1341", type: "cell" }], 
+                description: "Corretaje de propiedades de alto estándar"
+            },
+            { 
+                name: "Yasna Alvear", 
+                category: "Finanzas & Legal", 
+                phones: [{ num: "+56 9 6484 7179", type: "cell" }], 
+                description: "Gestión y administración inmobiliaria con excelente atención"
+            },
+
+            // COMPUTADORES & IMPRESORAS
+            { 
+                name: "Daniel Morales Coronado", 
+                category: "Servicios Varios", 
+                phones: [{ num: "+56 9 9040 0599", type: "cell" }], 
+                description: "Servicio técnico computacional, formateo, eliminación de virus y mantención de hardware"
+            },
+            { 
+                name: "Carlos - Reparación de Impresoras", 
+                category: "Servicios Varios", 
+                phones: [{ num: "+56 9 6353 1781", type: "cell" }], 
+                description: "Especialista técnico en destape de cabezales, mantención de inyección de tinta y láser"
+            },
+            { 
+                name: "Publigráphics Hugo Pérez", 
+                category: "Servicios Varios", 
+                phones: [
+                    { num: "+56 9 7918 4141", type: "cell", label: "Llamar Celular" },
+                    { num: "+56 65 242 1063", type: "fixed", label: "Fijo Oficina" }
+                ], 
+                description: "Imprenta comercial, diseño publicitario, folletería y tarjetas de presentación.",
+                extra: "Consolidado: Celular e imprenta unificados"
+            },
+            { 
+                name: "Punto Creativo Frutillar", 
+                category: "Servicios Varios", 
+                phones: [{ num: "+56 9 9680 3740", type: "cell" }], 
+                description: "Gigantografías, letreros publicitarios, autoadhesivos e impresiones digitales"
+            },
+            { 
+                name: "Imprenta Galerías Frutillar (Al lado del Correo)", 
+                category: "Servicios Varios", 
+                phones: [{ num: "+56 9 3333 8214", type: "cell" }], 
+                description: "Fotocopias, impresiones rápidas, anillados y plastificados al paso"
+            },
+
+            // BABY SITTERS & GUARDERÍAS
+            { 
+                name: "Isidora Kuschel (Babysitter)", 
+                category: "Servicios Varios", 
+                phones: [{ num: "+56 9 7600 6592", type: "cell" }], 
+                description: "Servicio de cuidado infantil particular con destacadas referencias"
+            },
+            { 
+                name: "Francisca González (Babysitter)", 
+                category: "Servicios Varios", 
+                phones: [{ num: "+56 9 4234 6013", type: "cell" }], 
+                description: "Cuidado de niños a domicilio con enfoque recreativo y de estimulación"
+            },
+            { 
+                name: "Guardería Los Pitufos (Tía Yoselin)", 
+                category: "Servicios Varios", 
+                phones: [{ num: "+56 9 3303 9358", type: "cell" }], 
+                description: "Espacio de cuidado infantil seguro con actividades educativas adaptadas"
+            },
+            { 
+                name: "Viveduca Guardería", 
+                category: "Servicios Varios", 
+                phones: [{ num: "+56 9 4012 0436", type: "cell" }], 
+                description: "Estimulación temprana, guardería infantil y acompañamiento educativo profesional"
+            }
+        ];
+
+        // Categories configuration with premium style tokens
+        const CATEGORIES = [
+            { id: "Emergencias", name: "Seguridad & Urgencias", icon: "bi-shield-fill-exclamation" },
+            { id: "Gastronomía", name: "Gastronomía & Cafés", icon: "bi-egg-fried" },
+            { id: "Repostería & Dulce", name: "Repostería & Dulce", icon: "bi-cake2-fill" },
+            { id: "Cultura & Talleres", name: "Cultura & Talleres", icon: "bi-palette-fill" },
+            { id: "Alimentos & Delivery", name: "Despensa & Leña", icon: "bi-cart4" },
+            { id: "Transporte & Uber", name: "Transporte & Uber", icon: "bi-car-front-fill" },
+            { id: "Fletes & Mudanzas", name: "Fletes & Mudanzas", icon: "bi-truck" },
+            { id: "Veterinarias & Mascotas", name: "Veterinarias & Mascotas", icon: "bi-heart-pulse-fill" },
+            { id: "Climatización & Estufas", name: "Combustión & Estufas", icon: "bi-fire" },
+            { id: "Grúas & Mecánica", name: "Grúas & Mecánica", icon: "bi-wrench-adjustable" },
+            { id: "Maestros & Construcción", name: "Maestros & Obras", icon: "bi-tools" },
+            { id: "Gasfitería & Reparación", name: "Gasfitería & Reparación", icon: "bi-wrench" },
+            { id: "Salud & Bienestar", name: "Salud & Médicos", icon: "bi-hospital" },
+            { id: "Finanzas & Legal", name: "Finanzas & Legal", icon: "bi-briefcase-fill" },
+            { id: "Belleza & Estética", name: "Peluquería & Estética", icon: "bi-scissors" },
+            { id: "Hospedajes & Arriendos", name: "Arriendos & Hospedajes", icon: "bi-house-check-fill" },
+            { id: "Servicios Varios", name: "Varios (Timbres/Niños)", icon: "bi-stars" }
+        ];
+
+        // Global State variables
+        let currentCategory = null;
+        let searchQuery = "";
+        let favorites = JSON.parse(localStorage.getItem('frutillar_favs_grouped_v2')) || [];
+
+        // DOM elements
+        const categoriesContainer = document.getElementById('categories-container');
+        const contactsGrid = document.getElementById('contacts-grid');
+        const searchInput = document.getElementById('search-input');
+        const emptyState = document.getElementById('empty-state');
+        const filterFeedback = document.getElementById('filter-feedback');
+        const filterCount = document.getElementById('filter-count');
+        const filterTag = document.getElementById('filter-tag');
+        const totalContactsCount = document.getElementById('total-contacts-count');
+        const favsCountEl = document.getElementById('favs-count');
+        const resultsTitle = document.getElementById('results-title');
+        const showingTotalTxt = document.getElementById('showing-total-txt');
+        const favoritesSection = document.getElementById('favorites-section');
+        const favoritesGrid = document.getElementById('favorites-grid');
+        const btnClearFilters = document.getElementById('btn-clear-filters');
+        const btnShowFavs = document.getElementById('btn-show-favs');
+        const toast = document.getElementById('toast-message');
+        const toastText = document.getElementById('toast-text');
+
+        // Intelligent Image Allocator matching keywords to highly descriptive photography
+        function getContactImage(contact) {
+            const name = contact.name.toLowerCase();
+            const desc = contact.description ? contact.description.toLowerCase() : "";
+            const extra = contact.extra ? contact.extra.toLowerCase() : "";
+            const cat = contact.category;
+
+            // Alimentos & Delivery específicos
+            if (name.includes("leña") || desc.includes("leña")) {
+                return "https://images.unsplash.com/photo-1520114878144-6123749968dd?w=400&q=80&auto=format&fit=crop"; // Leña cortada rustica
+            }
+            if (name.includes("palta") || name.includes("hass")) {
+                return "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=400&q=80&auto=format&fit=crop"; // Paltas frescas
+            }
+            if (name.includes("aceite") || name.includes("oliva")) {
+                return "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&q=80&auto=format&fit=crop"; // Aceite oliva
+            }
+            if (name.includes("arándano")) {
+                return "https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?w=400&q=80&auto=format&fit=crop"; // Arandanos azules
+            }
+            if (name.includes("harina")) {
+                return "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80&auto=format&fit=crop"; // Harina de panadero
+            }
+
+            // Gastronomía / Repostería específicos
+            if (name.includes("pizza") || name.includes("di parma") || name.includes("testaccio") || name.includes("anjura")) {
+                return "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&q=80&auto=format&fit=crop"; // Pizza deliciosa
+            }
+            if (name.includes("kuchen") || name.includes("oma") || name.includes("tante sandra") || name.includes("ayelen") || name.includes("nannig")) {
+                return "https://images.unsplash.com/photo-1587314168485-3236d6710814?w=400&q=80&auto=format&fit=crop"; // Tarta tradicional alemana
+            }
+            if (name.includes("miel") || name.includes("canela")) {
+                return "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=400&q=80&auto=format&fit=crop"; // Miel fresca o bollos de canela
+            }
+            if (name.includes("gluten") || name.includes("mont blanc")) {
+                return "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80&auto=format&fit=crop"; // Pan/pasteleria saludable
+            }
+            if (name.includes("manke") || name.includes("herz") || name.includes("rosalba") || name.includes("café") || name.includes("cafetería")) {
+                return "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=400&q=80&auto=format&fit=crop"; // Cafeteria acogedora
+            }
+
+            // Construcción & Maestros específicos
+            if (name.includes("termopanel") || name.includes("ventana")) {
+                return "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80&auto=format&fit=crop"; // Ventanas modernas termopanel
+            }
+            if (name.includes("mueble") || name.includes("carpintero") || name.includes("piticar") || name.includes("arismendi")) {
+                return "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&q=80&auto=format&fit=crop"; // Carpintero trabajando madera
+            }
+            if (name.includes("eléctrico") || name.includes("electricista") || name.includes("sec") || name.includes("servielectric")) {
+                return "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=400&q=80&auto=format&fit=crop"; // Tableros electricos, cables
+            }
+            if (name.includes("cierre") || name.includes("perimetral") || name.includes("cercos")) {
+                return "https://images.unsplash.com/photo-1508349937151-22b68b72d5b1?w=400&q=80&auto=format&fit=crop"; // Cierres madera parcelas
+            }
+
+            // Climatización / Chimeneas / Estufas
+            if (name.includes("estufa") || name.includes("pellet") || name.includes("combustión") || name.includes("chimenea") || name.includes("toyotomi") || name.includes("deshollinado")) {
+                return "https://images.unsplash.com/photo-1545224144-b38cd309e0a1?w=400&q=80&auto=format&fit=crop"; // Estufa a pellet / fuego calido
+            }
+
+            // Mascotas y veterinarias específicos
+            if (name.includes("apicultor") || name.includes("abeja") || name.includes("enjambre")) {
+                return "https://images.unsplash.com/photo-1473081556163-2a17de81fc97?w=400&q=80&auto=format&fit=crop"; // Abejas y panal
+            }
+            if (name.includes("exótico") || name.includes("pazpet")) {
+                return "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=400&q=80&auto=format&fit=crop"; // Mascota exótica conejo/hurón
+            }
+            if (name.includes("hotel perruno") || name.includes("villa alegre")) {
+                return "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400&q=80&auto=format&fit=crop"; // Perros felices jugando
+            }
+            if (name.includes("peluquería canina") || name.includes("sweet dog") || name.includes("grooming")) {
+                return "https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=400&q=80&auto=format&fit=crop"; // Perro siendo bañado/peinado
+            }
+
+            // Salud, médicos y bienestar específicos
+            if (name.includes("dental") || name.includes("dentista") || name.includes("ferrari") || name.includes("dentipro")) {
+                return "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&q=80&auto=format&fit=crop"; // Clinica odontológica
+            }
+            if (name.includes("yoga") || name.includes("meditación") || name.includes("nilkanta")) {
+                return "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&q=80&auto=format&fit=crop"; // Yoga y paz
+            }
+            if (name.includes("masaje") || name.includes("antiestrés") || name.includes("masoterapia")) {
+                return "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=400&q=80&auto=format&fit=crop"; // Masaje con piedras / aceites
+            }
+            if (name.includes("enfermer") || name.includes("inyecciones") || name.includes("doepking")) {
+                return "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400&q=80&auto=format&fit=crop"; // Cuidado enfermeria jeringas/medicamento
+            }
+            if (name.includes("podóloga") || name.includes("rosas") || name.includes("fernández")) {
+                return "https://images.unsplash.com/photo-1519415510236-718bdfcd89c9?w=400&q=80&auto=format&fit=crop"; // Podologia / pies cuidados
+            }
+
+            // Transporte / Grúa específicos
+            if (name.includes("grúa") || name.includes("schmidt") || name.includes("martínez")) {
+                return "https://images.unsplash.com/photo-1563720223185-11003d516935?w=400&q=80&auto=format&fit=crop"; // Camion de rescate mecanico
+            }
+            if (name.includes("flete") || name.includes("mudanza") || name.includes("camión")) {
+                return "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=400&q=80&auto=format&fit=crop"; // Mudanzas, cajas
+            }
+            if (name.includes("aeropuerto") || name.includes("transfer") || name.includes("vip")) {
+                return "https://images.unsplash.com/photo-1464013778555-8e74d8551390?w=400&q=80&auto=format&fit=crop"; // Traslado aeropuerto auto ejecutivo
+            }
+
+            // Belleza, Estética específicos
+            if (name.includes("uñas") || name.includes("manicurista") || name.includes("nails")) {
+                return "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&q=80&auto=format&fit=crop"; // Uñas pintadas
+            }
+            if (name.includes("cejas") || name.includes("pestañas") || name.includes("lashes")) {
+                return "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&q=80&auto=format&fit=crop"; // Cejas y pestañas bellas
+            }
+
+            // Servicios Varios / Imprentas
+            if (name.includes("timbre") || name.includes("alidanco")) {
+                return "https://images.unsplash.com/photo-1517817748493-49ec54a32465?w=400&q=80&auto=format&fit=crop"; // Sello de goma comercial
+            }
+            if (name.includes("computador") || name.includes("hardware") || name.includes("impresora")) {
+                return "https://images.unsplash.com/photo-1588508065123-287b28e013da?w=400&q=80&auto=format&fit=crop"; // Servicio tecnico notebook
+            }
+            if (name.includes("babysitter") || name.includes("guardería") || name.includes("pitufos") || name.includes("niños")) {
+                return "https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?w=400&q=80&auto=format&fit=crop"; // Niños jugando felices
+            }
+
+            // Costureras
+            if (name.includes("costurera") || name.includes("confección") || name.includes("arreglos") || name.includes("modista") || name.includes("margarita") || name.includes("angelica")) {
+                return "https://images.unsplash.com/photo-1552330287-95286524256c?w=400&q=80&auto=format&fit=crop"; // Maquina de coser, telas, hilos
+            }
+
+            // Flores / Paisajismo
+            if (name.includes("florería") || name.includes("floral") || name.includes("novia") || name.includes("mily") || name.includes("clementina")) {
+                return "https://images.unsplash.com/photo-1526047932273-341f2a7631f9?w=400&q=80&auto=format&fit=crop"; // Arreglos florales frescos
+            }
+
+            // Fallback genéricos por Categoría de alta calidad
+            switch(cat) {
+                case "Emergencias": 
+                    return "https://images.unsplash.com/photo-1546964124-0cce460f38ef?w=400&q=80&auto=format&fit=crop"; // Luces de policia
+                case "Gastronomía": 
+                    return "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&q=80&auto=format&fit=crop"; // Interior restaurante cozy
+                case "Repostería & Dulce": 
+                    return "https://images.unsplash.com/photo-1550617931-e17a7b70dce2?w=400&q=80&auto=format&fit=crop"; // Cupcakes y tartas
+                case "Cultura & Talleres": 
+                    return "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=400&q=80&auto=format&fit=crop"; // Paleta de arte y pinceles
+                case "Alimentos & Delivery": 
+                    return "https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&q=80&auto=format&fit=crop"; // Verduleria/canasta
+                case "Transporte & Uber": 
+                    return "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&q=80&auto=format&fit=crop"; // Taxi volante
+                case "Fletes & Mudanzas": 
+                    return "https://images.unsplash.com/photo-1603796846097-bee99e4a60c9?w=400&q=80&auto=format&fit=crop"; // Camion repartidor fletes
+                case "Veterinarias & Mascotas": 
+                    return "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=400&q=80&auto=format&fit=crop"; // Medico vet examinando perro
+                case "Climatización & Estufas": 
+                    return "https://images.unsplash.com/photo-1524338198850-8a2ff63aae5a?w=400&q=80&auto=format&fit=crop"; // Leños encendidos en chimenea
+                case "Maestros & Construcción": 
+                    return "https://images.unsplash.com/photo-1581092921461-eab62e97a780?w=400&q=80&auto=format&fit=crop"; // Casco y herramientas de obra
+                case "Gasfitería & Reparación": 
+                    return "https://images.unsplash.com/photo-1581094288338-2314dddb7ecc?w=400&q=80&auto=format&fit=crop"; // Tecnico reparando tuberias
+                case "Grúas & Mecánica": 
+                    return "https://images.unsplash.com/photo-1486006920555-c77dce18193b?w=400&q=80&auto=format&fit=crop"; // Taller mecanico con scanner de motor
+                case "Finanzas & Legal": 
+                    return "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&q=80&auto=format&fit=crop"; // Auditoria / calculos / leyes
+                case "Belleza & Estética": 
+                    return "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80&auto=format&fit=crop"; // Peluqueria moderna / salon de belleza
+                case "Hospedajes & Arriendos": 
+                    return "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=400&q=80&auto=format&fit=crop"; // Cabaña rustica de madera del sur
+                default: 
+                    return "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=400&q=80&auto=format&fit=crop"; // Colaboracion local
+            }
+        }
+
+        // Format phone digits properly to launch Chilean WhatsApp
+        function getWspLink(phoneNumber) {
+            if (phoneNumber.startsWith("http")) return phoneNumber;
+            let digits = phoneNumber.replace(/\D/g, '');
+            if (digits.startsWith('9') && digits.length === 9) {
+                digits = '56' + digits;
+            } else if (digits.length === 8) {
+                digits = '569' + digits;
+            } else if (!digits.startsWith('56')) {
+                digits = '56' + digits;
+            }
+            return `https://wa.me/${digits}`;
+        }
+
+        // Elegant floating visual toast
+        function showToast(message) {
+            toastText.textContent = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Easy to share and copy contact details block
+        function copyContactBlock(name, details) {
+            const tempInput = document.createElement("textarea");
+            tempInput.value = `${name}\n${details}`;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            showToast(`¡Datos de ${name} copiados!`);
+        }
+
+        // Sidebar Category Selector Renderer
+        function renderCategories() {
+            categoriesContainer.innerHTML = '';
+            
+            // "Show All" Button
+            const allBtn = document.createElement('button');
+            allBtn.className = `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all w-full text-left ${currentCategory === null ? 'bg-sky-600 text-white shadow-md shadow-sky-500/20' : 'hover:bg-slate-100 text-slate-700'}`;
+            allBtn.innerHTML = `
+                <i class="bi bi-asterisk"></i>
+                <span>Ver Todos</span>
+            `;
+            allBtn.addEventListener('click', () => setCategory(null));
+            categoriesContainer.appendChild(allBtn);
+
+            CATEGORIES.forEach(cat => {
+                const button = document.createElement('button');
+                button.className = `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all w-full text-left ${currentCategory === cat.id ? 'bg-sky-600 text-white shadow-md shadow-sky-500/20' : 'hover:bg-slate-100 text-slate-700'}`;
+                button.innerHTML = `
+                    <i class="bi ${cat.icon} ${currentCategory === cat.id ? 'text-white' : 'text-slate-500'}"></i>
+                    <span>${cat.name}</span>
+                `;
+                button.addEventListener('click', () => setCategory(cat.id));
+                categoriesContainer.appendChild(button);
+            });
+        }
+
+        function setCategory(categoryId) {
+            currentCategory = categoryId;
+            renderCategories();
+            filterAndRenderContacts();
+        }
+
+        function clearCategoryFilter() {
+            setCategory(null);
+        }
+
+        // Toggle Favorites Handler
+        function toggleFavorite(contactName) {
+            const index = favorites.indexOf(contactName);
+            if (index === -1) {
+                favorites.push(contactName);
+                showToast(`Agregado a tus favoritos ❤️`);
+            } else {
+                favorites.splice(index, 1);
+                showToast(`Eliminado de tus favoritos`);
+            }
+            localStorage.setItem('frutillar_favs_grouped_v2', JSON.stringify(favorites));
+            updateFavsBadge();
+            filterAndRenderContacts();
+        }
+
+        function updateFavsBadge() {
+            favsCountEl.textContent = favorites.length;
+            if (favorites.length > 0) {
+                btnShowFavs.classList.remove('bg-slate-100', 'text-slate-700');
+                btnShowFavs.classList.add('bg-rose-100', 'text-rose-700', 'border-rose-200');
+            } else {
+                btnShowFavs.classList.add('bg-slate-100', 'text-slate-700');
+                btnShowFavs.classList.remove('bg-rose-100', 'text-rose-700', 'border-rose-200');
+            }
+        }
+
+        // Create individual card elements with fully representative imagery
+        function createCardHtml(contact) {
+            const isFav = favorites.includes(contact.name);
+            const imgUrl = getContactImage(contact);
+            const hasMultiple = contact.phones && contact.phones.length > 1;
+
+            // Generate buttons for all consolidated phone lines
+            let buttonsHtml = '';
+            let phonesInfoRaw = '';
+            if (contact.phones && contact.phones.length > 0) {
+                contact.phones.forEach(p => {
+                    const isCell = p.type === "cell";
+                    const isLink = p.type === "link";
+                    
+                    let hrefValue = isLink ? p.num : (isCell ? getWspLink(p.num) : `tel:${p.num.replace(/\s+/g, '')}`);
+                    let btnColor = isLink ? 'bg-indigo-600 hover:bg-indigo-700 text-white' : (isCell ? 'bg-emerald-500 hover:bg-emerald-600 text-white' : 'bg-sky-600 hover:bg-sky-700 text-white');
+                    let icon = isLink ? 'bi-box-arrow-up-right' : (isCell ? 'bi-whatsapp' : 'bi-telephone');
+                    let defaultLabel = isLink ? 'Abrir Enlace' : (isCell ? 'WhatsApp' : 'Llamar');
+                    let label = p.label ? p.label : defaultLabel;
+
+                    phonesInfoRaw += ` - ${label}: ${p.num}\n`;
+
+                    buttonsHtml += `
+                        <a href="${hrefValue}" target="_blank" class="flex-1 ${btnColor} font-bold text-[11px] sm:text-xs py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all shadow-sm text-center">
+                            <i class="bi ${icon}"></i>
+                            <span>${label}</span>
+                        </a>
+                    `;
+                });
+            } else {
+                buttonsHtml = `<span class="text-xs text-slate-400 italic py-2">Consultar especialidad en centro</span>`;
+            }
+
+            const cleanDescription = contact.description || 'Sin descripción disponible.';
+            const extraBlock = contact.extra ? contact.extra : '';
+            const copyTextRaw = `${cleanDescription}\n${extraBlock}\nTeléfonos:\n${phonesInfoRaw}`;
+
+            return `
+                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group overflow-hidden card-zoom">
+                    <!-- Image and Tag header -->
+                    <div class="relative h-44 overflow-hidden bg-slate-100">
+                        <img src="${imgUrl}" class="w-full h-full object-cover transition-transform duration-500" alt="${contact.name}">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                        <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-slate-800 text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-sm">
+                            ${contact.category}
+                        </span>
+                        ${hasMultiple ? `
+                        <span class="absolute top-3 right-3 bg-amber-500 text-white text-[9px] font-black px-2 py-1 rounded-full shadow-sm flex items-center gap-1">
+                            <i class="bi bi-collection-fill"></i> NÚMEROS AGRUPADOS
+                        </span>` : ''}
+                    </div>
+
+                    <!-- Card Body -->
+                    <div class="p-4 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h4 class="font-bold text-slate-900 text-base sm:text-lg leading-tight group-hover:text-sky-700 transition-colors">
+                                ${contact.name}
+                            </h4>
+                            <p class="text-slate-600 text-xs mt-2 leading-relaxed">
+                                ${cleanDescription}
+                            </p>
+                            ${contact.extra ? `
+                            <p class="text-[10px] text-sky-600 font-semibold mt-2.5 flex items-center gap-1">
+                                <i class="bi bi-info-circle-fill"></i> ${contact.extra}
+                            </p>` : ''}
+                        </div>
+
+                        <!-- Buttons Action Footer -->
+                        <div class="mt-4 pt-3 border-t border-slate-100">
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                ${buttonsHtml}
+                            </div>
+                            <div class="flex items-center justify-between gap-2 mt-3.5">
+                                <button onclick="copyContactBlock('${contact.name.replace(/'/g, "\\'")}', '${copyTextRaw.replace(/'/g, "\\'").replace(/\n/g, '\\n')}')" class="text-xs text-slate-400 hover:text-slate-600 flex items-center gap-1 transition-colors">
+                                    <i class="bi bi-copy"></i> Copiar Datos
+                                </button>
+                                <button onclick="toggleFavorite('${contact.name.replace(/'/g, "\\'")}')" class="p-2 border rounded-xl hover:bg-slate-50 transition-colors ${isFav ? 'border-rose-100 text-rose-500 bg-rose-50' : 'border-slate-200 text-slate-400'}">
+                                    <i class="bi ${isFav ? 'bi-heart-fill' : 'bi-heart'}"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Filtering & Search engine
+        function filterAndRenderContacts() {
+            const filtered = CONTACTS_DATA.filter(contact => {
+                const matchesCategory = currentCategory ? contact.category === currentCategory : true;
+                
+                let phoneMatches = false;
+                if (contact.phones) {
+                    phoneMatches = contact.phones.some(p => p.num.toLowerCase().includes(searchQuery));
+                }
+
+                const matchesSearch = searchQuery ? (
+                    contact.name.toLowerCase().includes(searchQuery) ||
+                    (contact.description && contact.description.toLowerCase().includes(searchQuery)) ||
+                    contact.category.toLowerCase().includes(searchQuery) ||
+                    (contact.extra && contact.extra.toLowerCase().includes(searchQuery)) ||
+                    phoneMatches
+                ) : true;
+
+                return matchesCategory && matchesSearch;
+            });
+
+            showingTotalTxt.textContent = `Encontrados: ${filtered.length}`;
+
+            // Rendering Category bar visual feedback
+            if (currentCategory) {
+                filterFeedback.classList.remove('hidden');
+                filterCount.textContent = filtered.length;
+                filterTag.textContent = currentCategory;
+                resultsTitle.innerHTML = `<i class="bi bi-funnel-fill text-sky-600"></i> Rubro: ${currentCategory}`;
+            } else {
+                filterFeedback.classList.add('hidden');
+                resultsTitle.innerHTML = `<i class="bi bi-people-fill text-slate-500"></i> Todos los Servicios Registrados`;
+            }
+
+            // Redrawing favorites
+            const favoriteContacts = CONTACTS_DATA.filter(c => favorites.includes(c.name));
+            if (favoriteContacts.length > 0) {
+                favoritesSection.classList.remove('hidden');
+                favoritesGrid.innerHTML = favoriteContacts.map(c => createCardHtml(c)).join('');
+            } else {
+                favoritesSection.classList.add('hidden');
+                favoritesGrid.innerHTML = '';
+            }
+
+            // Redrawing main catalog
+            if (filtered.length === 0) {
+                contactsGrid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+                contactsGrid.classList.remove('hidden');
+                contactsGrid.innerHTML = filtered.map(c => createCardHtml(c)).join('');
+            }
+        }
+
+        // Debouncer search trigger
+        let debounceTimer;
+        searchInput.addEventListener('input', (e) => {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                searchQuery = e.target.value.toLowerCase().trim();
+                filterAndRenderContacts();
+            }, 100);
+        });
+
+        // "Mis Guardados" Filter button action
+        btnShowFavs.addEventListener('click', () => {
+            if (favorites.length === 0) {
+                showToast("Presiona el ícono del corazón ❤️ en cualquier servicio para agregarlo.");
+                return;
+            }
+            searchInput.value = '';
+            searchQuery = '';
+            currentCategory = null;
+            renderCategories();
+            
+            const favCards = CONTACTS_DATA.filter(c => favorites.includes(c.name));
+            contactsGrid.innerHTML = favCards.map(c => createCardHtml(c)).join('');
+            resultsTitle.innerHTML = `<i class="bi bi-heart-fill text-rose-500"></i> Mostrando solo tus Favoritos`;
+            showingTotalTxt.textContent = `Favoritos: ${favCards.length}`;
+            favoritesSection.classList.add('hidden');
+        });
+
+        // Reset Filter buttons
+        btnClearFilters.addEventListener('click', () => {
+            searchInput.value = '';
+            searchQuery = '';
+            currentCategory = null;
+            renderCategories();
+            filterAndRenderContacts();
+            showToast("Directorio restablecido");
+        });
+
+        // Application Onload Setup
+        window.onload = function() {
+            totalContactsCount.textContent = CONTACTS_DATA.length;
+            updateFavsBadge();
+            renderCategories();
+            filterAndRenderContacts();
+        }
+    </script>
+</body>
+</html>
