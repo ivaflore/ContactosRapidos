@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guía Visual de Contactos Útiles - Frutillar</title>
+    <title>Guía de Contactos de Frutillar - Directorio Responsivo</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Inter Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     
@@ -16,6 +16,7 @@
             font-family: 'Inter', sans-serif;
             background-color: #f8fafc;
         }
+        /* Custom scrollbar for desktop category listing & chat window */
         .custom-scrollbar::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -30,56 +31,61 @@
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
         }
+        /* Zoom effect on hover */
         .card-zoom:hover img {
             transform: scale(1.08);
         }
+        /* Transition for layout interactions */
+        .smooth-transition {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased">
+<body class="min-h-screen flex flex-col antialiased bg-slate-50 text-slate-800 selection:bg-sky-500 selection:text-white">
 
     <!-- Header / Hero Section -->
-    <header class="bg-gradient-to-br from-slate-900 via-sky-950 to-indigo-950 text-white shadow-md relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10 bg-grid-white"></div>
+    <header class="bg-gradient-to-br from-slate-900 via-sky-950 to-indigo-950 text-white shadow-md relative overflow-hidden shrink-0">
+        <div class="absolute inset-0 opacity-10 bg-grid-white bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px]"></div>
         <div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 relative z-10">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
                 <div>
-                    <span class="inline-flex items-center gap-1.5 bg-sky-500/30 text-sky-200 text-xs font-bold tracking-wider uppercase px-3 py-1 rounded-full mb-2">
+                    <span class="inline-flex items-center gap-1.5 bg-sky-500/30 text-sky-200 text-xs font-bold tracking-wider uppercase px-3 py-1 rounded-full mb-3">
                         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                        Frutillar, Chile • Directorio Visual
+                        Frutillar, Chile • Directorio Visual 100% Móvil
                     </span>
-                    <h1 class="text-3xl sm:text-4xl font-black tracking-tight">Guía Visual de Utilidad</h1>
-                    <p class="mt-2 text-sky-100 max-w-xl text-sm sm:text-base">
-                        Encuentra rápidamente lo que buscas mediante fotos e iconos representativos. Contactos unificados y depurados listos para WhatsApp.
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-none">Guía Visual de Utilidad</h1>
+                    <p class="mt-3 text-sky-100/90 max-w-xl text-sm sm:text-base leading-relaxed">
+                        Encuentra rápidamente servicios locales mediante fotos representativas y conectores rápidos a WhatsApp. Optimizado para pantallas táctiles y computadores.
                     </p>
                 </div>
                 
-                <!-- Status bar with totals -->
-                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10 flex items-center gap-4 self-start md:self-auto shadow-lg">
+                <!-- Counter Status Bar -->
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/10 flex items-center gap-6 self-start md:self-auto shadow-lg">
                     <div class="text-center">
-                        <span class="block text-2xl font-bold text-sky-300" id="total-contacts-count">0</span>
-                        <span class="text-xs text-sky-100 uppercase font-semibold">Contactos</span>
+                        <span class="block text-2xl sm:text-3xl font-black text-sky-300" id="total-contacts-count">0</span>
+                        <span class="text-[10px] text-sky-200 uppercase font-bold tracking-wider">Contactos</span>
                     </div>
-                    <div class="w-px h-8 bg-white/20"></div>
+                    <div class="w-px h-10 bg-white/20"></div>
                     <div class="text-center">
-                        <span class="block text-2xl font-bold text-emerald-400" id="favs-count">0</span>
-                        <span class="text-xs text-sky-100 uppercase font-semibold">Favoritos</span>
+                        <span class="block text-2xl sm:text-3xl font-black text-emerald-400" id="favs-count">0</span>
+                        <span class="text-[10px] text-sky-200 uppercase font-bold tracking-wider">Favoritos</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Search & Quick Filters -->
-            <div class="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-3 bg-white p-2 sm:p-3 rounded-2xl shadow-xl border border-slate-100 text-slate-800">
-                <div class="lg:col-span-8 relative">
+            <!-- Search & Quick Actions -->
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-12 gap-3 bg-white p-3 rounded-2xl shadow-2xl border border-slate-100 text-slate-800">
+                <div class="md:col-span-8 relative">
                     <i class="bi bi-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg"></i>
-                    <input type="text" id="search-input" placeholder="Escribe para buscar (ej: flete, gasfiter, leña, torta, peluquería)..." 
-                           class="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none text-slate-900 font-medium transition-all placeholder:text-slate-400" />
+                    <input type="text" id="search-input" placeholder="Escribe para buscar (ej: flete, gasfiter, leña, torta, peluquería, médico)..." 
+                           class="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none text-slate-900 font-medium transition-all placeholder:text-slate-400 text-sm" />
                 </div>
-                <div class="lg:col-span-4 flex gap-2">
-                    <button id="btn-show-favs" class="flex-1 px-4 py-3.5 bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-600 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all border border-transparent hover:border-rose-100">
+                <div class="md:col-span-4 flex gap-2">
+                    <button id="btn-show-favs" class="flex-1 px-4 py-3.5 bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-600 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all border border-transparent hover:border-rose-100 active:scale-95">
                         <i class="bi bi-heart-fill text-rose-500"></i>
-                        <span>Mis Guardados</span>
+                        <span>Guardados</span>
                     </button>
-                    <button id="btn-clear-filters" class="px-4 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all">
+                    <button id="btn-clear-filters" class="px-4 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-95">
                         <i class="bi bi-arrow-counterclockwise"></i>
                         <span class="hidden sm:inline">Limpiar</span>
                     </button>
@@ -88,103 +94,142 @@
         </div>
     </header>
 
-    <!-- Main Content Grid -->
-    <main class="flex-grow max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <!-- Dynamic Ad Banner Section -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full mt-6" id="dynamic-ad-banner-wrapper">
+        <!-- Rendered dynamically by JavaScript -->
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        <!-- Left Sidebar: Category Selector -->
+        <!-- Sidebar Navigation: Responsive Category Selection -->
         <aside class="lg:col-span-3">
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5 sticky top-6">
-                <h3 class="font-bold text-slate-900 text-lg mb-4 flex items-center gap-2">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-4 lg:p-5 lg:sticky lg:top-6">
+                <h3 class="font-black text-slate-900 text-base lg:text-lg mb-3 lg:mb-4 flex items-center gap-2">
                     <i class="bi bi-grid-fill text-sky-600"></i>
                     Filtrar por Rubro
                 </h3>
                 
-                <div class="flex flex-row lg:flex-col gap-1 overflow-x-auto lg:overflow-x-visible pb-3 lg:pb-0 custom-scrollbar whitespace-nowrap lg:whitespace-normal" id="categories-container">
-                    <!-- Categories injected here -->
+                <!-- Horizontal scroll on mobile, vertical list on desktop -->
+                <div class="flex flex-row lg:flex-col gap-1.5 overflow-x-auto lg:overflow-x-visible pb-3 lg:pb-0 custom-scrollbar whitespace-nowrap lg:whitespace-normal -mx-4 px-4 lg:mx-0 lg:px-0" id="categories-container">
+                    <!-- Categories injected here as pills on mobile, rows on desktop -->
                 </div>
             </div>
         </aside>
 
-        <!-- Right Content Area: Contacts list -->
+        <!-- Right Side: Dynamic Grid list of results -->
         <section class="lg:col-span-9 flex flex-col gap-6">
             
-            <!-- Filter Feedback Status -->
-            <div id="filter-feedback" class="hidden bg-sky-50 border border-sky-100 rounded-xl p-4 flex items-center justify-between text-sky-800 text-sm">
+            <!-- Filter Feedback Toast Header -->
+            <div id="filter-feedback" class="hidden bg-sky-50 border border-sky-100 rounded-xl p-4 flex items-center justify-between text-sky-800 text-xs sm:text-sm shadow-sm smooth-transition">
                 <div class="flex items-center gap-2">
-                    <i class="bi bi-info-circle-fill text-sky-600"></i>
+                    <i class="bi bi-info-circle-fill text-sky-600 text-base"></i>
                     <span>Mostrando <strong id="filter-count">0</strong> resultados en <strong id="filter-tag">"Categoría"</strong></span>
                 </div>
-                <button onclick="clearCategoryFilter()" class="text-sky-600 hover:text-sky-800 font-bold underline">Ver todos</button>
+                <button onclick="clearCategoryFilter()" class="text-sky-600 hover:text-sky-800 font-bold underline transition-colors">Ver todos</button>
             </div>
 
             <!-- Favorited Contacts Section -->
-            <div id="favorites-section" class="hidden">
-                <h3 class="font-bold text-slate-900 text-lg mb-3 flex items-center gap-2">
+            <div id="favorites-section" class="hidden smooth-transition">
+                <h3 class="font-black text-slate-900 text-base sm:text-lg mb-3 flex items-center gap-2">
                     <i class="bi bi-heart-fill text-rose-500 animate-pulse"></i>
-                    Tus Favoritos Rápidos
+                    Tus Favoritos Guardados
                 </h3>
                 <div id="favorites-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-                    <!-- Favorite cards -->
+                    <!-- Favorite cards rendered here -->
                 </div>
                 <hr class="border-slate-200 mt-6 mb-2">
             </div>
 
             <!-- Contacts Grid Header -->
-            <div class="flex items-center justify-between">
-                <h3 class="font-bold text-slate-900 text-lg flex items-center gap-2" id="results-title">
+            <div class="flex items-center justify-between gap-4">
+                <h3 class="font-black text-slate-900 text-base sm:text-lg flex items-center gap-2" id="results-title">
                     <i class="bi bi-people-fill text-slate-500"></i>
-                    Todos los Servicios Registrados
+                    Servicios Registrados
                 </h3>
-                <span class="text-xs text-slate-500 font-medium" id="showing-total-txt"></span>
+                <span class="text-xs text-slate-500 font-bold bg-slate-100 px-2.5 py-1 rounded-full shrink-0" id="showing-total-txt"></span>
             </div>
 
-            <!-- Empty State -->
-            <div id="empty-state" class="hidden flex-col items-center justify-center py-12 px-4 text-center bg-white rounded-2xl border border-slate-200/80 shadow-sm">
+            <!-- Empty Search Results State -->
+            <div id="empty-state" class="hidden flex-col items-center justify-center py-16 px-4 text-center bg-white rounded-2xl border border-slate-200/80 shadow-xs">
                 <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 mb-4 text-2xl">
                     <i class="bi bi-search"></i>
                 </div>
-                <h4 class="font-bold text-slate-800 text-lg">No encontramos resultados</h4>
-                <p class="text-slate-500 text-sm mt-1 max-w-sm">Intenta buscando con otra palabra o selecciona "Ver Todos" en las categorías.</p>
+                <h4 class="font-black text-slate-800 text-lg">No encontramos resultados</h4>
+                <p class="text-slate-500 text-sm mt-1 max-w-sm">Intenta buscando con otra palabra o haz clic en "Ver Todos" en las categorías laterales.</p>
             </div>
 
-            <!-- Contact Cards Container -->
+            <!-- Main Contacts Cards Grid -->
             <div id="contacts-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                 <!-- Cards injected dynamically -->
             </div>
         </section>
     </main>
 
-    <!-- Toast Notification for Actions -->
-    <div id="toast-message" class="fixed bottom-5 right-5 bg-slate-900 text-white text-xs sm:text-sm px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 transition-all duration-300 transform translate-y-20 opacity-0 z-50">
+
+    <!-- Ad Request Responsive Modal -->
+    <div id="ad-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4 z-50 transition-all">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-100 transform scale-95 transition-transform duration-300">
+            <div class="p-6 bg-gradient-to-r from-sky-600 to-indigo-700 text-white relative">
+                <button onclick="toggleAdModal()" class="absolute top-4 right-4 text-white/80 hover:text-white text-xl active:scale-90">
+                    <i class="bi bi-x-circle-fill"></i>
+                </button>
+                <h3 class="text-xl font-bold">¡Anúnciate en la Guía!</h3>
+                <p class="text-sky-100 text-xs mt-1">Llega de forma efectiva a residentes y turistas de Frutillar.</p>
+            </div>
+            <div class="p-6 space-y-4 text-slate-700 text-sm">
+                <p>Ofrecemos espacios publicitarios visuales premium adaptados a tu rubro, con redirección y clics directos hacia tu WhatsApp o web de negocio.</p>
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-2 text-xs">
+                    <div class="flex items-start gap-2.5">
+                        <i class="bi bi-check-circle-fill text-emerald-500 mt-0.5"></i>
+                        <span>Posición fija y destacada en el banner de tu rubro.</span>
+                    </div>
+                    <div class="flex items-start gap-2.5">
+                        <i class="bi bi-check-circle-fill text-emerald-500 mt-0.5"></i>
+                        <span>Enlace de redirección directa sin intermediarios.</span>
+                    </div>
+                </div>
+                <div class="pt-2">
+                    <a id="modal-wsp-link" href="https://wa.me/5695107718?text=Hola,%20me%20gustaria%20saber%20mas%20sobre%20como%20anunciar%20mi%20negocio%20en%20la%20Guia%20de%20Frutillar" target="_blank" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md active:scale-95">
+                        <i class="bi bi-whatsapp text-lg"></i>
+                        <span>Consultar Tarifas por WhatsApp</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feedback Toast Alert Notifications -->
+    <div id="toast-message" class="fixed bottom-5 left-1/2 -translate-x-1/2 sm:left-auto sm:translate-x-0 sm:right-5 bg-slate-900 text-white text-xs sm:text-sm px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 transition-all duration-300 transform translate-y-24 opacity-0 z-50">
         <i class="bi bi-check-circle-fill text-emerald-400"></i>
         <span id="toast-text">Contacto guardado</span>
     </div>
 
-    <!-- Premium Footer -->
-    <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 mt-12">
+    <!-- Responsive Premium Footer -->
+    <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 mt-12 shrink-0">
         <div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-4">
             <div>
                 <p class="text-slate-200 font-bold flex items-center gap-2 justify-center sm:justify-start">
                     <i class="bi bi-telephone-outbound-fill text-sky-400"></i>
-                    Guía de Contactos de Utilidad Frutillar
+                    Directorio Visual Frutillar
                 </p>
-                <p class="text-xs text-slate-500 mt-1">Directorio visual unificado y consolidado sin duplicados.</p>
+                <p class="text-xs text-slate-500 mt-1">Directorio de utilidad responsiva y consolidada para residentes y visitantes.</p>
             </div>
             <div class="text-xs text-slate-500 flex flex-col items-center sm:items-end">
-                <span>Optimizado para teléfonos y computadoras</span>
+                <span>¿Deseas anunciar tu negocio? <button onclick="toggleAdModal()" class="text-sky-400 font-semibold hover:underline">Haz clic aquí</button></span>
                 <span class="mt-1">Región de Los Lagos, Chile 🇨🇱</span>
             </div>
         </div>
     </footer>
 
     <script>
-        // Database optimized with correct structure and fully un-duplicated
+        // Comprehensive multi-rubro consolidated database (100% deduplicated and formatted)
         const CONTACTS_DATA = [
             // SEGURIDAD Y EMERGENCIAS
             { 
                 name: "Carabineros Frutillar", 
                 category: "Emergencias", 
-                phones: [{ num: "+56 65 276 5149", type: "fixed", label: "Llamar Teléfono Fijo" }], 
+                phones: [{ num: "+56 65 276 5149", type: "fixed", label: "Llamar Fijo" }], 
                 description: "Subcomisaría Frutillar - Carabineros de Chile",
                 extra: "Línea oficial de urgencia local"
             },
@@ -192,8 +237,8 @@
                 name: "Seguridad Pública Frutillar", 
                 category: "Emergencias", 
                 phones: [
-                    { num: "+56 9 5107 718", type: "cell", label: "Encargado Seguridad" },
-                    { num: "+56 9 5011 2729", type: "cell", label: "Alvaro (Seguridad)" }
+                    { num: "+56 9 5107 718", type: "cell", label: "Encargado" },
+                    { num: "+56 9 5011 2729", type: "cell", label: "Alvaro" }
                 ], 
                 description: "Oficina comunal y patrullaje preventivo de Frutillar",
                 extra: "Atención y apoyo comunitario"
@@ -217,11 +262,10 @@
                 name: "Di Parma", 
                 category: "Gastronomía", 
                 phones: [
-                    { num: "+56 9 8928 6146", type: "cell", label: "Línea Principal" },
-                    { num: "+56 9 8802 6944", type: "cell", label: "Línea Secundaria" }
+                    { num: "+56 9 8928 6146", type: "cell", label: "Línea 1" },
+                    { num: "+56 9 8802 6944", type: "cell", label: "Línea 2" }
                 ], 
-                description: "Pizzería, pastas, tablas y cafetería gourmet",
-                extra: "Consolidado: Líneas unificadas en un perfil"
+                description: "Pizzería, pastas, tablas y cafetería gourmet"
             },
             { 
                 name: "Casa Rosalba", 
@@ -253,6 +297,13 @@
                 phones: [{ num: "+56 9 8409 2560", type: "cell" }], 
                 description: "Café, restaurant, espacio para eventos y música en vivo todos los viernes",
                 extra: "Instagram: @lacocinadelacasona"
+            },
+            { 
+                name: "Cafetería zestelimon", 
+                category: "Gastronomía", 
+                phones: [{ num: "+56 9 98182 953", type: "cell" }], 
+                description: "Cafetería de especialidad con exquisita pastelería y acogedor ambiente.",
+                extra: "Instagram: @zestelimon"
             },
 
             // CULTURA & TALLERES
@@ -737,7 +788,7 @@
                 name: "Crematorio de Mascotas San Francisco", 
                 category: "Veterinarias & Mascotas", 
                 phones: [{ num: "+56 9 7239 1654", type: "cell" }], 
-                description: "Servicio digno y compasivo de cremación individual y colectiva para mascotas"
+                description: "Servicio digno de cremación individual y colectiva para mascotas"
             },
             { 
                 name: "Hoteles Perrunos", 
@@ -889,14 +940,14 @@
                     { num: "+65 223 2008", type: "fixed", label: "Fijo Local" }
                 ], 
                 description: "Elaboración de timbres comerciales y artículos personalizados de regalo.",
-                extra: "Consolidado: Los tres números disponibles unificados"
+                extra: "Consolidado: Los tres números unificados"
             },
             { 
                 name: "Valentina - Limpieza & Uñas", 
                 category: "Servicios Varios", 
                 phones: [
-                    { num: "+56 9 7227 8662", type: "cell", label: "Línea Limpieza" },
-                    { num: "+56 9 3483 7984", type: "cell", label: "Línea Manicure" },
+                    { num: "+56 9 7227 8662", type: "cell", label: "Limpieza" },
+                    { num: "+56 9 3483 7984", type: "cell", label: "Manicure" },
                     { num: "+56 9 7272 4896", type: "cell", label: "Manicure 2" }
                 ], 
                 description: "Servicio experto de limpieza de alfombras a domicilio y embellecimiento de manos (Manicurista).",
@@ -921,7 +972,7 @@
                 category: "Finanzas & Legal", 
                 phones: [{ num: "+56 9 2243 9493", type: "cell" }], 
                 description: "Servicios de declaración de impuestos, balances comerciales e inicio de actividades.",
-                extra: "Asociado a Sandra (NyS) y se marca transporte como inactivo"
+                extra: "Sandra (NyS) contabilidad"
             },
             { 
                 name: "Asesorías Empresariales MYV", 
@@ -936,7 +987,7 @@
                     { num: "+56 9 7897 0684", type: "cell", label: "Contador Carlos" },
                     { num: "+56 9 5679 9289", type: "cell", label: "Ingeniera Carola" }
                 ], 
-                description: "Consultora experta con más de 25 años de experiencia en Frutillar. Especialistas en regularización, inicio de actividades y remuneraciones.",
+                description: "Consultora experta con más de 25 años de experiencia en Frutillar. Especialistas en regularización, inicio de actividades y de empresas.",
                 extra: "Consolidado: Datos unificados bajo una sola firma profesional"
             },
             { 
@@ -1029,7 +1080,7 @@
                 category: "Maestros & Construcción", 
                 phones: [{ num: "+56 9 5714 8718", type: "cell" }], 
                 description: "Obras civiles, ampliaciones estructurales de madera, reparaciones y servicios técnicos para el hogar.",
-                extra: "Consolidado: Se agrupan perfiles de construcción y servicios técnicos MMM"
+                extra: "Consolidado: Se agrupan perfiles de construcción y servicios técnicos"
             },
             { 
                 name: "Carpinteros Frutillar M. Piticar", 
@@ -1277,7 +1328,7 @@
                 name: "Centro Médico Frutillar", 
                 category: "Salud & Bienestar", 
                 phones: [
-                    { num: "+56 9 3663 9969", type: "cell", label: "Contacto Celular" },
+                    { num: "+56 9 3663 9969", type: "cell", label: "Celular" },
                     { num: "+56 65 242 2808", type: "fixed", label: "Línea Fija" }
                 ], 
                 description: "Consultas médicas generales, laboratorios clínicos y especialistas",
@@ -1449,7 +1500,7 @@
                 name: "Dr. Patricio Guerra (Neurólogo Infantil)", 
                 category: "Salud & Bienestar", 
                 phones: [], 
-                description: "Médico especialista en neurología de niños y adolescentes. Atiende en Puerto Montt.",
+                description: "Médico especialista en neurología de niños y adolescentes. Atiende en puerto Montt.",
                 extra: "Especialista en la región"
             },
             { 
@@ -1532,7 +1583,7 @@
                 name: "Farmacia Doctor Simi", 
                 category: "Salud & Bienestar", 
                 phones: [{ num: "6522421998", type: "fixed", label: "Llamar Farmacia" }], 
-                description: "Farmacia de medicamentos genéricos y bioequivalentes"
+                description: "Farmacia de de medicamentos genéricos y bioequivalentes"
             },
             { 
                 name: "Farmacia Municipal Frutillar", 
@@ -1851,7 +1902,7 @@
                 name: "Publigráphics Hugo Pérez", 
                 category: "Servicios Varios", 
                 phones: [
-                    { num: "+56 9 7918 4141", type: "cell", label: "Llamar Celular" },
+                    { num: "+56 9 7918 4141", type: "cell", label: "Celular" },
                     { num: "+56 65 242 1063", type: "fixed", label: "Fijo Oficina" }
                 ], 
                 description: "Imprenta comercial, diseño publicitario, folletería y tarjetas de presentación.",
@@ -1894,13 +1945,20 @@
                 category: "Servicios Varios", 
                 phones: [{ num: "+56 9 4012 0436", type: "cell" }], 
                 description: "Estimulación temprana, guardería infantil y acompañamiento educativo profesional"
+            },
+            { 
+                name: "Jardín infantil Espacio fënn", 
+                category: "Educación", 
+                phones: [{ num: "+56 9 9263 9956", type: "cell" }], 
+                description: "Espacio de juego, aprendizaje interactivo y cuidado respetuoso para la primera infancia."
             }
         ];
 
-        // Categories configuration with premium style tokens
+        // Responsive Category items structure
         const CATEGORIES = [
             { id: "Emergencias", name: "Seguridad & Urgencias", icon: "bi-shield-fill-exclamation" },
             { id: "Gastronomía", name: "Gastronomía & Cafés", icon: "bi-egg-fried" },
+            { id: "Educación", name: "Educación & Jardines", icon: "bi-book-half" },
             { id: "Repostería & Dulce", name: "Repostería & Dulce", icon: "bi-cake2-fill" },
             { id: "Cultura & Talleres", name: "Cultura & Talleres", icon: "bi-palette-fill" },
             { id: "Alimentos & Delivery", name: "Despensa & Leña", icon: "bi-cart4" },
@@ -1918,10 +1976,50 @@
             { id: "Servicios Varios", name: "Varios (Timbres/Niños)", icon: "bi-stars" }
         ];
 
-        // Global State variables
+        // MOCK PUBLICITY ADS FOR SPECIFIC CATEGORIES
+        const ADS_DATA = [
+            {
+                category: "Gastronomía",
+                title: "Di Parma Pizzería Gourmet",
+                tagline: "¡La mejor pizza artesanal frente al lago!",
+                description: "Ingredientes seleccionados, masas de fermentación lenta y las mejores tablas. Delivery directo a tu cabaña.",
+                image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&q=80&auto=format&fit=crop",
+                ctaText: "Hacer Pedido",
+                ctaLink: "https://wa.me/56989286146?text=Hola,%20vi%20tu%20anuncio%20en%20la%20Guia%20de%20Frutillar"
+            },
+            {
+                category: "Repostería & Dulce",
+                title: "Mont Blanc Pastelería Fina",
+                tagline: "Dulces momentos 100% libres de culpas",
+                description: "Repostería saludable premium libre de azúcar, libre de gluten y sin lactosa. Kuchenes, tortas y postres finos.",
+                image: "https://images.unsplash.com/photo-1587314168485-3236d6710814?w=800&q=80&auto=format&fit=crop",
+                ctaText: "Reservar Pedido",
+                ctaLink: "https://wa.me/56999467475?text=Hola,%20vi%20tu%20anuncio%20en%20la%20Guia%20de%20Frutillar"
+            },
+            {
+                category: "Veterinarias & Mascotas",
+                title: "Puerto Pet - Centro Veterinario",
+                tagline: "El cuidado que tu mascota se merece",
+                description: "Consulta clínica, peluquería profesional, alimentos premium y accesorios exclusivos. Patio Winkler y Alto Nativo.",
+                image: "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=800&q=80&auto=format&fit=crop",
+                ctaText: "Agendar Hora",
+                ctaLink: "https://wa.me/56922014390?text=Hola,%20vi%20tu%20anuncio%20en%20la%20Guia%20de%20Frutillar"
+            },
+            {
+                category: "Maestros & Construcción",
+                title: "Ivan Rauque - Instalaciones SEC",
+                tagline: "Electricidad garantizada con estándar SEC",
+                description: "Proyectos habitacionales, regularizaciones TE1 y servicios de emergencia las 24 hrs. Experiencia y seguridad certificada.",
+                image: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800&q=80&auto=format&fit=crop",
+                ctaText: "Cotizar Servicio",
+                ctaLink: "https://wa.me/56984213573?text=Hola,%20vi%20tu%20anuncio%20en%20la%20Guia%20de%20Frutillar"
+            }
+        ];
+
+        // State variables
         let currentCategory = null;
         let searchQuery = "";
-        let favorites = JSON.parse(localStorage.getItem('frutillar_favs_grouped_v2')) || [];
+        let favorites = JSON.parse(localStorage.getItem('frutillar_favs_grouped_v3')) || [];
 
         // DOM elements
         const categoriesContainer = document.getElementById('categories-container');
@@ -1941,176 +2039,192 @@
         const btnShowFavs = document.getElementById('btn-show-favs');
         const toast = document.getElementById('toast-message');
         const toastText = document.getElementById('toast-text');
+        const bannerWrapper = document.getElementById('dynamic-ad-banner-wrapper');
 
-        // Intelligent Image Allocator matching keywords to highly descriptive photography
+        // Responsive Image Allocator
         function getContactImage(contact) {
             const name = contact.name.toLowerCase();
             const desc = contact.description ? contact.description.toLowerCase() : "";
-            const extra = contact.extra ? contact.extra.toLowerCase() : "";
             const cat = contact.category;
+
+            // Emergencias, Carabineros y Seguridad Pública
+            if (name.includes("carabineros")) {
+                // Escudo oficial de Carabineros de Chile (imagen proporcionada)
+                return "image_58995d.png"; 
+            }
+            if (name.includes("seguridad pública") || name.includes("seguridad publica")) {
+                // Vehículo y balizas amarillas de seguridad preventiva y comunitaria
+                return "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=600&q=80&auto=format&fit=crop"; 
+            }
 
             // Alimentos & Delivery específicos
             if (name.includes("leña") || desc.includes("leña")) {
-                return "https://images.unsplash.com/photo-1520114878144-6123749968dd?w=400&q=80&auto=format&fit=crop"; // Leña cortada rustica
+                return "https://images.unsplash.com/photo-1520114878144-6123749968dd?w=400&q=80&auto=format&fit=crop"; 
+            }
+            if (name.includes("jardín") || name.includes("fënn") || cat === "Educación") {
+                return "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&q=80&auto=format&fit=crop"; 
+            }
+            if (name.includes("zestelimon")) {
+                return "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=400&q=80&auto=format&fit=crop"; 
             }
             if (name.includes("palta") || name.includes("hass")) {
-                return "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=400&q=80&auto=format&fit=crop"; // Paltas frescas
+                return "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=400&q=80&auto=format&fit=crop"; 
             }
             if (name.includes("aceite") || name.includes("oliva")) {
-                return "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&q=80&auto=format&fit=crop"; // Aceite oliva
+                return "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&q=80&auto=format&fit=crop"; 
             }
             if (name.includes("arándano")) {
-                return "https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?w=400&q=80&auto=format&fit=crop"; // Arandanos azules
+                return "https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?w=400&q=80&auto=format&fit=crop"; 
             }
             if (name.includes("harina")) {
-                return "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80&auto=format&fit=crop"; // Harina de panadero
+                return "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80&auto=format&fit=crop"; 
             }
 
             // Gastronomía / Repostería específicos
             if (name.includes("pizza") || name.includes("di parma") || name.includes("testaccio") || name.includes("anjura")) {
-                return "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&q=80&auto=format&fit=crop"; // Pizza deliciosa
+                return "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&q=80&auto=format&fit=crop"; 
             }
             if (name.includes("kuchen") || name.includes("oma") || name.includes("tante sandra") || name.includes("ayelen") || name.includes("nannig")) {
-                return "https://images.unsplash.com/photo-1587314168485-3236d6710814?w=400&q=80&auto=format&fit=crop"; // Tarta tradicional alemana
+                return "https://images.unsplash.com/photo-1587314168485-3236d6710814?w=400&q=80&auto=format&fit=crop"; 
             }
             if (name.includes("miel") || name.includes("canela")) {
-                return "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=400&q=80&auto=format&fit=crop"; // Miel fresca o bollos de canela
+                return "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=400&q=80&auto=format&fit=crop"; 
             }
             if (name.includes("gluten") || name.includes("mont blanc")) {
-                return "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80&auto=format&fit=crop"; // Pan/pasteleria saludable
+                return "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80&auto=format&fit=crop"; 
             }
             if (name.includes("manke") || name.includes("herz") || name.includes("rosalba") || name.includes("café") || name.includes("cafetería")) {
-                return "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=400&q=80&auto=format&fit=crop"; // Cafeteria acogedora
+                return "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=400&q=80&auto=format&fit=crop"; 
             }
 
             // Construcción & Maestros específicos
             if (name.includes("termopanel") || name.includes("ventana")) {
-                return "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80&auto=format&fit=crop"; // Ventanas modernas termopanel
+                return "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80&auto=format&fit=crop"; 
             }
             if (name.includes("mueble") || name.includes("carpintero") || name.includes("piticar") || name.includes("arismendi")) {
-                return "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&q=80&auto=format&fit=crop"; // Carpintero trabajando madera
+                return "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&q=80&auto=format&fit=crop"; 
             }
             if (name.includes("eléctrico") || name.includes("electricista") || name.includes("sec") || name.includes("servielectric")) {
-                return "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=400&q=80&auto=format&fit=crop"; // Tableros electricos, cables
+                return "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=400&q=80&auto=format&fit=crop"; 
             }
             if (name.includes("cierre") || name.includes("perimetral") || name.includes("cercos")) {
-                return "https://images.unsplash.com/photo-1508349937151-22b68b72d5b1?w=400&q=80&auto=format&fit=crop"; // Cierres madera parcelas
+                return "https://images.unsplash.com/photo-1508349937151-22b68b72d5b1?w=400&q=80&auto=format&fit=crop"; 
             }
 
             // Climatización / Chimeneas / Estufas
             if (name.includes("estufa") || name.includes("pellet") || name.includes("combustión") || name.includes("chimenea") || name.includes("toyotomi") || name.includes("deshollinado")) {
-                return "https://images.unsplash.com/photo-1545224144-b38cd309e0a1?w=400&q=80&auto=format&fit=crop"; // Estufa a pellet / fuego calido
+                return "https://images.unsplash.com/photo-1545224144-b38cd309e0a1?w=400&q=80&auto=format&fit=crop"; 
             }
 
             // Mascotas y veterinarias específicos
             if (name.includes("apicultor") || name.includes("abeja") || name.includes("enjambre")) {
-                return "https://images.unsplash.com/photo-1473081556163-2a17de81fc97?w=400&q=80&auto=format&fit=crop"; // Abejas y panal
+                return "https://images.unsplash.com/photo-1473081556163-2a17de81fc97?w=400&q=80&auto=format&fit=crop"; 
             }
             if (name.includes("exótico") || name.includes("pazpet")) {
-                return "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=400&q=80&auto=format&fit=crop"; // Mascota exótica conejo/hurón
+                return "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=400&q=80&auto=format&fit=crop"; 
             }
             if (name.includes("hotel perruno") || name.includes("villa alegre")) {
-                return "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400&q=80&auto=format&fit=crop"; // Perros felices jugando
+                return "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400&q=80&auto=format&fit=crop"; 
             }
             if (name.includes("peluquería canina") || name.includes("sweet dog") || name.includes("grooming")) {
-                return "https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=400&q=80&auto=format&fit=crop"; // Perro siendo bañado/peinado
+                return "https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=400&q=80&auto=format&fit=crop"; 
             }
 
             // Salud, médicos y bienestar específicos
             if (name.includes("dental") || name.includes("dentista") || name.includes("ferrari") || name.includes("dentipro")) {
-                return "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&q=80&auto=format&fit=crop"; // Clinica odontológica
+                return "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&q=80&auto=format&fit=crop"; 
             }
             if (name.includes("yoga") || name.includes("meditación") || name.includes("nilkanta")) {
-                return "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&q=80&auto=format&fit=crop"; // Yoga y paz
+                return "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&q=80&auto=format&fit=crop"; 
             }
             if (name.includes("masaje") || name.includes("antiestrés") || name.includes("masoterapia")) {
-                return "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=400&q=80&auto=format&fit=crop"; // Masaje con piedras / aceites
+                return "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=400&q=80&auto=format&fit=crop"; 
             }
             if (name.includes("enfermer") || name.includes("inyecciones") || name.includes("doepking")) {
-                return "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400&q=80&auto=format&fit=crop"; // Cuidado enfermeria jeringas/medicamento
+                return "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400&q=80&auto=format&fit=crop"; 
             }
             if (name.includes("podóloga") || name.includes("rosas") || name.includes("fernández")) {
-                return "https://images.unsplash.com/photo-1519415510236-718bdfcd89c9?w=400&q=80&auto=format&fit=crop"; // Podologia / pies cuidados
+                return "https://images.unsplash.com/photo-1519415510236-718bdfcd89c9?w=400&q=80&auto=format&fit=crop"; 
             }
 
             // Transporte / Grúa específicos
             if (name.includes("grúa") || name.includes("schmidt") || name.includes("martínez")) {
-                return "https://images.unsplash.com/photo-1563720223185-11003d516935?w=400&q=80&auto=format&fit=crop"; // Camion de rescate mecanico
+                return "https://images.unsplash.com/photo-1563720223185-11003d516935?w=400&q=80&auto=format&fit=crop"; 
             }
             if (name.includes("flete") || name.includes("mudanza") || name.includes("camión")) {
-                return "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=400&q=80&auto=format&fit=crop"; // Mudanzas, cajas
+                return "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=400&q=80&auto=format&fit=crop"; 
             }
             if (name.includes("aeropuerto") || name.includes("transfer") || name.includes("vip")) {
-                return "https://images.unsplash.com/photo-1464013778555-8e74d8551390?w=400&q=80&auto=format&fit=crop"; // Traslado aeropuerto auto ejecutivo
+                return "https://images.unsplash.com/photo-1464013778555-8e74d8551390?w=400&q=80&auto=format&fit=crop"; 
             }
 
             // Belleza, Estética específicos
             if (name.includes("uñas") || name.includes("manicurista") || name.includes("nails")) {
-                return "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&q=80&auto=format&fit=crop"; // Uñas pintadas
+                return "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&q=80&auto=format&fit=crop"; 
             }
             if (name.includes("cejas") || name.includes("pestañas") || name.includes("lashes")) {
-                return "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&q=80&auto=format&fit=crop"; // Cejas y pestañas bellas
+                return "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&q=80&auto=format&fit=crop"; 
             }
 
             // Servicios Varios / Imprentas
             if (name.includes("timbre") || name.includes("alidanco")) {
-                return "https://images.unsplash.com/photo-1517817748493-49ec54a32465?w=400&q=80&auto=format&fit=crop"; // Sello de goma comercial
+                return "https://images.unsplash.com/photo-1517817748493-49ec54a32465?w=400&q=80&auto=format&fit=crop"; 
             }
             if (name.includes("computador") || name.includes("hardware") || name.includes("impresora")) {
-                return "https://images.unsplash.com/photo-1588508065123-287b28e013da?w=400&q=80&auto=format&fit=crop"; // Servicio tecnico notebook
+                return "https://images.unsplash.com/photo-1588508065123-287b28e013da?w=400&q=80&auto=format&fit=crop"; 
             }
-            if (name.includes("babysitter") || name.includes("guardería") || name.includes("pitufos") || name.includes("niños")) {
-                return "https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?w=400&q=80&auto=format&fit=crop"; // Niños jugando felices
+            if (name.includes("babysitter") || name.includes("guardería") || name.includes("niños") || name.includes("isidora") || name.includes("francisca")) {
+                return "https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?w=400&q=80&auto=format&fit=crop"; 
             }
 
             // Costureras
             if (name.includes("costurera") || name.includes("confección") || name.includes("arreglos") || name.includes("modista") || name.includes("margarita") || name.includes("angelica")) {
-                return "https://images.unsplash.com/photo-1552330287-95286524256c?w=400&q=80&auto=format&fit=crop"; // Maquina de coser, telas, hilos
+                return "https://images.unsplash.com/photo-1552330287-95286524256c?w=400&q=80&auto=format&fit=crop"; 
             }
 
             // Flores / Paisajismo
             if (name.includes("florería") || name.includes("floral") || name.includes("novia") || name.includes("mily") || name.includes("clementina")) {
-                return "https://images.unsplash.com/photo-1526047932273-341f2a7631f9?w=400&q=80&auto=format&fit=crop"; // Arreglos florales frescos
+                return "https://images.unsplash.com/photo-1526047932273-341f2a7631f9?w=400&q=80&auto=format&fit=crop"; 
             }
 
-            // Fallback genéricos por Categoría de alta calidad
+            // Fallback categorization mapping
             switch(cat) {
                 case "Emergencias": 
-                    return "https://images.unsplash.com/photo-1546964124-0cce460f38ef?w=400&q=80&auto=format&fit=crop"; // Luces de policia
+                    return "https://images.unsplash.com/photo-1546964124-0cce460f38ef?w=400&q=80&auto=format&fit=crop"; 
                 case "Gastronomía": 
-                    return "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&q=80&auto=format&fit=crop"; // Interior restaurante cozy
+                    return "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&q=80&auto=format&fit=crop"; 
                 case "Repostería & Dulce": 
-                    return "https://images.unsplash.com/photo-1550617931-e17a7b70dce2?w=400&q=80&auto=format&fit=crop"; // Cupcakes y tartas
+                    return "https://images.unsplash.com/photo-1550617931-e17a7b70dce2?w=400&q=80&auto=format&fit=crop"; 
                 case "Cultura & Talleres": 
-                    return "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=400&q=80&auto=format&fit=crop"; // Paleta de arte y pinceles
+                    return "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=400&q=80&auto=format&fit=crop"; 
                 case "Alimentos & Delivery": 
-                    return "https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&q=80&auto=format&fit=crop"; // Verduleria/canasta
+                    return "https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&q=80&auto=format&fit=crop"; 
                 case "Transporte & Uber": 
-                    return "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&q=80&auto=format&fit=crop"; // Taxi volante
+                    return "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&q=80&auto=format&fit=crop"; 
                 case "Fletes & Mudanzas": 
-                    return "https://images.unsplash.com/photo-1603796846097-bee99e4a60c9?w=400&q=80&auto=format&fit=crop"; // Camion repartidor fletes
+                    return "https://images.unsplash.com/photo-1603796846097-bee99e4a60c9?w=400&q=80&auto=format&fit=crop"; 
                 case "Veterinarias & Mascotas": 
-                    return "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=400&q=80&auto=format&fit=crop"; // Medico vet examinando perro
+                    return "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=400&q=80&auto=format&fit=crop"; 
                 case "Climatización & Estufas": 
-                    return "https://images.unsplash.com/photo-1524338198850-8a2ff63aae5a?w=400&q=80&auto=format&fit=crop"; // Leños encendidos en chimenea
+                    return "https://images.unsplash.com/photo-1524338198850-8a2ff63aae5a?w=400&q=80&auto=format&fit=crop"; 
                 case "Maestros & Construcción": 
-                    return "https://images.unsplash.com/photo-1581092921461-eab62e97a780?w=400&q=80&auto=format&fit=crop"; // Casco y herramientas de obra
+                    return "https://images.unsplash.com/photo-1581092921461-eab62e97a780?w=400&q=80&auto=format&fit=crop"; 
                 case "Gasfitería & Reparación": 
-                    return "https://images.unsplash.com/photo-1581094288338-2314dddb7ecc?w=400&q=80&auto=format&fit=crop"; // Tecnico reparando tuberias
+                    return "https://images.unsplash.com/photo-1581094288338-2314dddb7ecc?w=400&q=80&auto=format&fit=crop"; 
                 case "Grúas & Mecánica": 
-                    return "https://images.unsplash.com/photo-1486006920555-c77dce18193b?w=400&q=80&auto=format&fit=crop"; // Taller mecanico con scanner de motor
+                    return "https://images.unsplash.com/photo-1486006920555-c77dce18193b?w=400&q=80&auto=format&fit=crop"; 
                 case "Finanzas & Legal": 
-                    return "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&q=80&auto=format&fit=crop"; // Auditoria / calculos / leyes
+                    return "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&q=80&auto=format&fit=crop"; 
                 case "Belleza & Estética": 
-                    return "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80&auto=format&fit=crop"; // Peluqueria moderna / salon de belleza
+                    return "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80&auto=format&fit=crop"; 
                 case "Hospedajes & Arriendos": 
-                    return "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=400&q=80&auto=format&fit=crop"; // Cabaña rustica de madera del sur
+                    return "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=400&q=80&auto=format&fit=crop"; 
                 default: 
-                    return "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=400&q=80&auto=format&fit=crop"; // Colaboracion local
+                    return "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=400&q=80&auto=format&fit=crop"; 
             }
         }
 
-        // Format phone digits properly to launch Chilean WhatsApp
+        // Parse phone digits to work reliably with WhatsApp API
         function getWspLink(phoneNumber) {
             if (phoneNumber.startsWith("http")) return phoneNumber;
             let digits = phoneNumber.replace(/\D/g, '');
@@ -2124,18 +2238,18 @@
             return `https://wa.me/${digits}`;
         }
 
-        // Elegant floating visual toast
+        // Show floating UI feedback notification
         function showToast(message) {
             toastText.textContent = message;
-            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.remove('translate-y-24', 'opacity-0');
             toast.classList.add('translate-y-0', 'opacity-100');
             setTimeout(() => {
                 toast.classList.remove('translate-y-0', 'opacity-100');
-                toast.classList.add('translate-y-20', 'opacity-0');
+                toast.classList.add('translate-y-24', 'opacity-0');
             }, 3000);
         }
 
-        // Easy to share and copy contact details block
+        // Easily copy and share contacts
         function copyContactBlock(name, details) {
             const tempInput = document.createElement("textarea");
             tempInput.value = `${name}\n${details}`;
@@ -2146,13 +2260,109 @@
             showToast(`¡Datos de ${name} copiados!`);
         }
 
-        // Sidebar Category Selector Renderer
+        // Open/Close Ad Modal Dialog
+        function toggleAdModal() {
+            const modal = document.getElementById('ad-modal');
+            const modalBox = modal.firstElementChild;
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                setTimeout(() => {
+                    modalBox.classList.remove('scale-95');
+                    modalBox.classList.add('scale-100');
+                }, 10);
+            } else {
+                modalBox.classList.remove('scale-100');
+                modalBox.classList.add('scale-95');
+                setTimeout(() => {
+                    modal.classList.remove('flex');
+                    modal.classList.add('hidden');
+                }, 200);
+            }
+        }
+
+        // Build the dynamic ad display block adaptively
+        function renderAdBanner() {
+            let activeAd = null;
+
+            if (currentCategory) {
+                activeAd = ADS_DATA.find(ad => ad.category === currentCategory);
+            } else {
+                activeAd = ADS_DATA[Math.floor(Math.random() * ADS_DATA.length)];
+            }
+
+            if (activeAd) {
+                bannerWrapper.innerHTML = `
+                    <div class="bg-gradient-to-r from-slate-900 to-indigo-950 rounded-2xl overflow-hidden border border-slate-800 shadow-xl relative group transition-all duration-300">
+                        <div class="absolute inset-0 bg-cover bg-center opacity-25 filter blur-xs group-hover:scale-105 transition-transform duration-700" style="background-image: url('${activeAd.image}');"></div>
+                        <div class="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/95 to-transparent"></div>
+                        
+                        <div class="relative z-10 p-5 sm:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
+                            <div class="max-w-2xl space-y-1.5">
+                                <div class="flex items-center gap-2">
+                                    <span class="bg-amber-500/90 text-slate-950 text-[10px] font-black uppercase px-2 py-0.5 rounded-full tracking-wider">
+                                        Patrocinado
+                                    </span>
+                                    <span class="text-sky-300 text-xs font-bold uppercase tracking-wide">
+                                        ${activeAd.category}
+                                    </span>
+                                </div>
+                                <h2 class="text-lg sm:text-xl font-extrabold text-white leading-tight">
+                                    ${activeAd.title}
+                                </h2>
+                                <p class="text-sky-100 font-semibold text-xs sm:text-sm">
+                                    ${activeAd.tagline}
+                                </p>
+                                <p class="text-slate-300 text-xs leading-relaxed max-w-xl">
+                                    ${activeAd.description}
+                                </p>
+                            </div>
+                            <div class="flex flex-col sm:flex-row md:flex-col lg:flex-row gap-2 w-full md:w-auto self-stretch md:self-auto justify-end">
+                                <a href="${activeAd.ctaLink}" target="_blank" class="px-5 py-3.5 bg-emerald-500 hover:bg-emerald-600 text-slate-950 hover:text-white font-bold text-xs sm:text-sm rounded-xl flex items-center justify-center gap-1.5 transition-all shadow-md active:scale-95">
+                                    <i class="bi bi-whatsapp"></i>
+                                    <span>${activeAd.ctaText}</span>
+                                </a>
+                                <button onclick="toggleAdModal()" class="px-4 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold text-xs sm:text-sm rounded-xl transition-all border border-white/10 active:scale-95">
+                                    ¡Anúnciate Aquí!
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                const customWsp = `https://wa.me/5695107718?text=Hola,%20me%20gustaria%20anunciar%20mi%20local%20en%20el%20rubro%20de%20${encodeURIComponent(currentCategory || 'Varios')}%20en%20la%20Guia%20de%20Frutillar`;
+                document.getElementById('modal-wsp-link').href = customWsp;
+                
+                bannerWrapper.innerHTML = `
+                    <div class="bg-gradient-to-r from-sky-900/40 via-indigo-950/40 to-slate-900 rounded-2xl p-5 border border-sky-800/30 shadow-md relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-sky-500/10 flex items-center justify-center text-sky-400 text-xl shrink-0">
+                                <i class="bi bi-megaphone-fill animate-bounce"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white text-sm sm:text-base">¿Tienes un negocio de <span class="text-sky-300">"${currentCategory}"</span>?</h4>
+                                <p class="text-slate-400 text-xs mt-0.5 max-w-lg">
+                                    Lidera esta categoría en Frutillar y posiciona tu marca justo aquí con enlace directo a tu WhatsApp. ¡Sé el primero!
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 w-full md:w-auto shrink-0 justify-end">
+                            <a href="${customWsp}" target="_blank" class="px-4 py-2.5 bg-sky-500 hover:bg-sky-600 text-slate-950 hover:text-white font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 transition-all w-full md:w-auto active:scale-95">
+                                <i class="bi bi-patch-check-fill"></i>
+                                <span>Anunciar Mi Local</span>
+                            </a>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Build the filters adaptive wrapper
         function renderCategories() {
             categoriesContainer.innerHTML = '';
             
-            // "Show All" Button
             const allBtn = document.createElement('button');
-            allBtn.className = `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all w-full text-left ${currentCategory === null ? 'bg-sky-600 text-white shadow-md shadow-sky-500/20' : 'hover:bg-slate-100 text-slate-700'}`;
+            allBtn.className = `flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all shrink-0 ${currentCategory === null ? 'bg-sky-600 text-white shadow-md shadow-sky-500/20' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`;
             allBtn.innerHTML = `
                 <i class="bi bi-asterisk"></i>
                 <span>Ver Todos</span>
@@ -2162,7 +2372,7 @@
 
             CATEGORIES.forEach(cat => {
                 const button = document.createElement('button');
-                button.className = `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all w-full text-left ${currentCategory === cat.id ? 'bg-sky-600 text-white shadow-md shadow-sky-500/20' : 'hover:bg-slate-100 text-slate-700'}`;
+                button.className = `flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all shrink-0 ${currentCategory === cat.id ? 'bg-sky-600 text-white shadow-md shadow-sky-500/20' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`;
                 button.innerHTML = `
                     <i class="bi ${cat.icon} ${currentCategory === cat.id ? 'text-white' : 'text-slate-500'}"></i>
                     <span>${cat.name}</span>
@@ -2175,6 +2385,7 @@
         function setCategory(categoryId) {
             currentCategory = categoryId;
             renderCategories();
+            renderAdBanner();
             filterAndRenderContacts();
         }
 
@@ -2182,7 +2393,7 @@
             setCategory(null);
         }
 
-        // Toggle Favorites Handler
+        // Favorites state storage handler
         function toggleFavorite(contactName) {
             const index = favorites.indexOf(contactName);
             if (index === -1) {
@@ -2192,7 +2403,7 @@
                 favorites.splice(index, 1);
                 showToast(`Eliminado de tus favoritos`);
             }
-            localStorage.setItem('frutillar_favs_grouped_v2', JSON.stringify(favorites));
+            localStorage.setItem('frutillar_favs_grouped_v3', JSON.stringify(favorites));
             updateFavsBadge();
             filterAndRenderContacts();
         }
@@ -2208,13 +2419,20 @@
             }
         }
 
-        // Create individual card elements with fully representative imagery
+        // Generate beautiful responsive contact card template
         function createCardHtml(contact) {
             const isFav = favorites.includes(contact.name);
             const imgUrl = getContactImage(contact);
             const hasMultiple = contact.phones && contact.phones.length > 1;
 
-            // Generate buttons for all consolidated phone lines
+            // Generar onerror específico para Carabineros y fallback general para otros si falla la imagen local
+            let onerrorAttr = '';
+            if (contact.name.toLowerCase().includes("carabineros")) {
+                onerrorAttr = `onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Roundel_of_Carabineros_de_Chile.svg/640px-Roundel_of_Carabineros_de_Chile.svg.png';"`;
+            } else {
+                onerrorAttr = `onerror="this.onerror=null; this.src='https://placehold.co/400x250/f1f5f9/475569?text=${encodeURIComponent(contact.name)}';"`;
+            }
+
             let buttonsHtml = '';
             let phonesInfoRaw = '';
             if (contact.phones && contact.phones.length > 0) {
@@ -2231,14 +2449,14 @@
                     phonesInfoRaw += ` - ${label}: ${p.num}\n`;
 
                     buttonsHtml += `
-                        <a href="${hrefValue}" target="_blank" class="flex-1 ${btnColor} font-bold text-[11px] sm:text-xs py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all shadow-sm text-center">
+                        <a href="${hrefValue}" target="_blank" class="flex-1 ${btnColor} font-bold text-[11px] sm:text-xs py-3 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all shadow-xs text-center active:scale-95">
                             <i class="bi ${icon}"></i>
                             <span>${label}</span>
                         </a>
                     `;
                 });
             } else {
-                buttonsHtml = `<span class="text-xs text-slate-400 italic py-2">Consultar especialidad en centro</span>`;
+                buttonsHtml = `<span class="text-xs text-slate-400 italic py-2">Consultar especialista en centro</span>`;
             }
 
             const cleanDescription = contact.description || 'Sin descripción disponible.';
@@ -2246,24 +2464,22 @@
             const copyTextRaw = `${cleanDescription}\n${extraBlock}\nTeléfonos:\n${phonesInfoRaw}`;
 
             return `
-                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group overflow-hidden card-zoom">
-                    <!-- Image and Tag header -->
-                    <div class="relative h-44 overflow-hidden bg-slate-100">
-                        <img src="${imgUrl}" class="w-full h-full object-cover transition-transform duration-500" alt="${contact.name}">
+                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between group overflow-hidden card-zoom">
+                    <div class="relative h-44 overflow-hidden bg-slate-100 shrink-0">
+                        <img src="${imgUrl}" ${onerrorAttr} class="w-full h-full object-cover transition-transform duration-500" alt="${contact.name}">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                        <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-md text-slate-800 text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-sm">
+                        <span class="absolute top-3 left-3 bg-white/95 backdrop-blur-md text-slate-800 text-[10px] font-black px-2.5 py-1 rounded-full shadow-sm">
                             ${contact.category}
                         </span>
                         ${hasMultiple ? `
                         <span class="absolute top-3 right-3 bg-amber-500 text-white text-[9px] font-black px-2 py-1 rounded-full shadow-sm flex items-center gap-1">
-                            <i class="bi bi-collection-fill"></i> NÚMEROS AGRUPADOS
+                            <i class="bi bi-collection-fill"></i> AGRUPADO
                         </span>` : ''}
                     </div>
 
-                    <!-- Card Body -->
                     <div class="p-4 flex-grow flex flex-col justify-between">
                         <div>
-                            <h4 class="font-bold text-slate-900 text-base sm:text-lg leading-tight group-hover:text-sky-700 transition-colors">
+                            <h4 class="font-black text-slate-900 text-base sm:text-lg leading-tight group-hover:text-sky-700 transition-colors">
                                 ${contact.name}
                             </h4>
                             <p class="text-slate-600 text-xs mt-2 leading-relaxed">
@@ -2275,16 +2491,15 @@
                             </p>` : ''}
                         </div>
 
-                        <!-- Buttons Action Footer -->
                         <div class="mt-4 pt-3 border-t border-slate-100">
                             <div class="flex items-center gap-1.5 flex-wrap">
                                 ${buttonsHtml}
                             </div>
-                            <div class="flex items-center justify-between gap-2 mt-3.5">
-                                <button onclick="copyContactBlock('${contact.name.replace(/'/g, "\\'")}', '${copyTextRaw.replace(/'/g, "\\'").replace(/\n/g, '\\n')}')" class="text-xs text-slate-400 hover:text-slate-600 flex items-center gap-1 transition-colors">
+                            <div class="flex items-center justify-between gap-2 mt-3.5 pt-1">
+                                <button onclick="copyContactBlock('${contact.name.replace(/'/g, "\\'")}', '${copyTextRaw.replace(/'/g, "\\'").replace(/\n/g, '\\n')}')" class="text-xs text-slate-400 hover:text-slate-600 flex items-center gap-1 transition-colors active:scale-95">
                                     <i class="bi bi-copy"></i> Copiar Datos
                                 </button>
-                                <button onclick="toggleFavorite('${contact.name.replace(/'/g, "\\'")}')" class="p-2 border rounded-xl hover:bg-slate-50 transition-colors ${isFav ? 'border-rose-100 text-rose-500 bg-rose-50' : 'border-slate-200 text-slate-400'}">
+                                <button onclick="toggleFavorite('${contact.name.replace(/'/g, "\\'")}')" class="p-2.5 border rounded-xl hover:bg-slate-50 transition-colors active:scale-95 ${isFav ? 'border-rose-100 text-rose-500 bg-rose-50' : 'border-slate-200 text-slate-400'}">
                                     <i class="bi ${isFav ? 'bi-heart-fill' : 'bi-heart'}"></i>
                                 </button>
                             </div>
@@ -2315,9 +2530,8 @@
                 return matchesCategory && matchesSearch;
             });
 
-            showingTotalTxt.textContent = `Encontrados: ${filtered.length}`;
+            showingTotalTxt.textContent = `Servicios: ${filtered.length}`;
 
-            // Rendering Category bar visual feedback
             if (currentCategory) {
                 filterFeedback.classList.remove('hidden');
                 filterCount.textContent = filtered.length;
@@ -2325,10 +2539,9 @@
                 resultsTitle.innerHTML = `<i class="bi bi-funnel-fill text-sky-600"></i> Rubro: ${currentCategory}`;
             } else {
                 filterFeedback.classList.add('hidden');
-                resultsTitle.innerHTML = `<i class="bi bi-people-fill text-slate-500"></i> Todos los Servicios Registrados`;
+                resultsTitle.innerHTML = `<i class="bi bi-people-fill text-slate-500"></i> Todos los Servicios`;
             }
 
-            // Redrawing favorites
             const favoriteContacts = CONTACTS_DATA.filter(c => favorites.includes(c.name));
             if (favoriteContacts.length > 0) {
                 favoritesSection.classList.remove('hidden');
@@ -2338,7 +2551,6 @@
                 favoritesGrid.innerHTML = '';
             }
 
-            // Redrawing main catalog
             if (filtered.length === 0) {
                 contactsGrid.classList.add('hidden');
                 emptyState.classList.remove('hidden');
@@ -2349,7 +2561,6 @@
             }
         }
 
-        // Debouncer search trigger
         let debounceTimer;
         searchInput.addEventListener('input', (e) => {
             clearTimeout(debounceTimer);
@@ -2359,7 +2570,6 @@
             }, 100);
         });
 
-        // "Mis Guardados" Filter button action
         btnShowFavs.addEventListener('click', () => {
             if (favorites.length === 0) {
                 showToast("Presiona el ícono del corazón ❤️ en cualquier servicio para agregarlo.");
@@ -2369,29 +2579,32 @@
             searchQuery = '';
             currentCategory = null;
             renderCategories();
+            renderAdBanner();
             
             const favCards = CONTACTS_DATA.filter(c => favorites.includes(c.name));
             contactsGrid.innerHTML = favCards.map(c => createCardHtml(c)).join('');
-            resultsTitle.innerHTML = `<i class="bi bi-heart-fill text-rose-500"></i> Mostrando solo tus Favoritos`;
+            resultsTitle.innerHTML = `<i class="bi bi-heart-fill text-rose-500"></i> Mostrando tus Favoritos`;
             showingTotalTxt.textContent = `Favoritos: ${favCards.length}`;
             favoritesSection.classList.add('hidden');
         });
 
-        // Reset Filter buttons
         btnClearFilters.addEventListener('click', () => {
             searchInput.value = '';
             searchQuery = '';
             currentCategory = null;
             renderCategories();
+            renderAdBanner();
             filterAndRenderContacts();
             showToast("Directorio restablecido");
         });
 
-        // Application Onload Setup
+
+        // Global Initialization
         window.onload = function() {
             totalContactsCount.textContent = CONTACTS_DATA.length;
             updateFavsBadge();
             renderCategories();
+            renderAdBanner();
             filterAndRenderContacts();
         }
     </script>
